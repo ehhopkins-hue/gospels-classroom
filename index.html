@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gospels — 7th Grade Classroom</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1209;
+    --parchment: #f5edd6;
+    --parchment-dark: #e8d9b5;
+    --parchment-deep: #d4c08a;
+    --crimson: #8b1a1a;
+    --gold: #b8860b;
+    --gold-bright: #d4a017;
+    --blue-deep: #1a2e4a;
+    --blue-mid: #2c4a6e;
+    --sage: #4a5e3a;
+    --cream: #fdf6e3;
+    --shadow: rgba(26,18,9,0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--blue-deep);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Starfield background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, #1a3a5c 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, #2a1a0a 0%, transparent 50%),
+      linear-gradient(180deg, #0d1b2a 0%, #1a2e1a 50%, #1a1a0a 100%);
+    z-index: 0;
+  }
+
+  .app-wrapper {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: rgba(10,8,4,0.7);
+    border-right: 1px solid rgba(184,134,11,0.3);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(8px);
+  }
+
+  .sidebar-header {
+    padding: 28px 20px 20px;
+    border-bottom: 1px solid rgba(184,134,11,0.2);
+    text-align: center;
+  }
+
+  .cross-icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 8px rgba(212,160,23,0.6));
+  }
+
+  .sidebar-title {
+    font-family: 'Cinzel', serif;
+    color: var(--gold-bright);
+    font-size: 14px;
+    letter-spacing: 2px;
+    line-height: 1.5;
+  }
+
+  .sidebar-sub {
+    color: rgba(245,237,214,0.5);
+    font-size: 12px;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  .week-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 0;
+  }
+
+  .week-list::-webkit-scrollbar { width: 4px; }
+  .week-list::-webkit-scrollbar-track { background: transparent; }
+  .week-list::-webkit-scrollbar-thumb { background: rgba(184,134,11,0.3); border-radius: 2px; }
+
+  .week-section {
+    margin-bottom: 4px;
+  }
+
+  .week-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+    color: rgba(245,237,214,0.65);
+    font-family: 'Crimson Pro', serif;
+    font-size: 13.5px;
+    line-height: 1.3;
+  }
+
+  .week-btn:hover {
+    background: rgba(184,134,11,0.12);
+    color: var(--gold-bright);
+  }
+
+  .week-btn.active {
+    background: rgba(184,134,11,0.2);
+    color: var(--gold-bright);
+    border-left: 3px solid var(--gold-bright);
+  }
+
+  .week-btn .wk-num {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    background: rgba(184,134,11,0.2);
+    color: var(--gold);
+    padding: 2px 6px;
+    border-radius: 2px;
+    min-width: 32px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .week-btn.active .wk-num {
+    background: var(--gold);
+    color: #000;
+  }
+
+  .special-btn {
+    border-top: 1px solid rgba(184,134,11,0.15);
+    margin-top: 4px;
+    padding-top: 8px;
+  }
+
+  .special-btn .wk-num {
+    background: rgba(139,26,26,0.3);
+    color: #e88;
+  }
+
+  .special-btn.active .wk-num {
+    background: var(--crimson);
+    color: #fff;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .main-header {
+    background: rgba(10,8,4,0.6);
+    border-bottom: 1px solid rgba(184,134,11,0.2);
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+    flex-shrink: 0;
+  }
+
+  .lesson-title-area h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--parchment);
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  .lesson-title-area p {
+    color: rgba(245,237,214,0.45);
+    font-size: 13px;
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  .mode-tabs {
+    display: flex;
+    gap: 6px;
+  }
+
+  .mode-tab {
+    background: rgba(245,237,214,0.06);
+    border: 1px solid rgba(245,237,214,0.15);
+    color: rgba(245,237,214,0.5);
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .mode-tab:hover {
+    border-color: rgba(184,134,11,0.4);
+    color: var(--gold);
+  }
+
+  .mode-tab.active {
+    background: rgba(184,134,11,0.2);
+    border-color: var(--gold);
+    color: var(--gold-bright);
+  }
+
+  /* ── CONTENT AREA ── */
+  .content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .content-area::-webkit-scrollbar { width: 6px; }
+  .content-area::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+  .content-area::-webkit-scrollbar-thumb { background: rgba(184,134,11,0.2); border-radius: 3px; }
+
+  /* ── LESSON VIEW ── */
+  .lesson-view {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 32px 60px;
+  }
+
+  .lesson-hero {
+    background: linear-gradient(135deg, rgba(26,46,74,0.8) 0%, rgba(74,44,14,0.6) 100%);
+    border: 1px solid rgba(184,134,11,0.3);
+    border-radius: 8px;
+    padding: 32px 36px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lesson-hero::before {
+    content: '✦';
+    position: absolute;
+    right: 28px;
+    top: 20px;
+    font-size: 48px;
+    color: rgba(184,134,11,0.12);
+    pointer-events: none;
+  }
+
+  .week-label {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .week-label::before, .week-label::after {
+    content: '';
+    flex: 1;
+    max-width: 40px;
+    height: 1px;
+    background: rgba(184,134,11,0.4);
+  }
+
+  .lesson-hero h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--parchment);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .lesson-hero .theme {
+    color: rgba(245,237,214,0.55);
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+
+  .scripture-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(184,134,11,0.15);
+    border: 1px solid rgba(184,134,11,0.3);
+    color: var(--gold-bright);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-style: italic;
+  }
+
+  .day-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .day-tab {
+    background: rgba(245,237,214,0.05);
+    border: 1px solid rgba(245,237,214,0.12);
+    color: rgba(245,237,214,0.45);
+    padding: 7px 16px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .day-tab:hover { border-color: rgba(184,134,11,0.4); color: var(--gold); }
+  .day-tab.active { background: rgba(184,134,11,0.2); border-color: var(--gold); color: var(--gold-bright); }
+
+  .teaching-card {
+    background: rgba(245,237,214,0.04);
+    border: 1px solid rgba(245,237,214,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .teaching-card-header {
+    background: rgba(26,46,74,0.5);
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(184,134,11,0.15);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .teaching-card-header .icon { font-size: 18px; }
+
+  .teaching-card-header h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--parchment);
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  .teaching-card-body {
+    padding: 20px;
+    color: rgba(245,237,214,0.8);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ── CHAT INTERFACE ── */
+  .chat-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .chat-context-bar {
+    background: rgba(26,46,74,0.4);
+    border-bottom: 1px solid rgba(184,134,11,0.15);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .chat-context-bar .ctx-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+  }
+
+  .ctx-pill {
+    background: rgba(184,134,11,0.15);
+    border: 1px solid rgba(184,134,11,0.25);
+    color: rgba(245,237,214,0.7);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  .messages-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .messages-area::-webkit-scrollbar { width: 6px; }
+  .messages-area::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+  .messages-area::-webkit-scrollbar-thumb { background: rgba(184,134,11,0.2); border-radius: 3px; }
+
+  .msg {
+    display: flex;
+    gap: 14px;
+    max-width: 800px;
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .msg-avatar.teacher {
+    background: linear-gradient(135deg, #1a3a5c, #2c5c8e);
+    border: 1px solid rgba(184,134,11,0.4);
+    font-size: 16px;
+  }
+
+  .msg-avatar.student {
+    background: linear-gradient(135deg, #3a2a0a, #5c4a1a);
+    border: 1px solid rgba(184,134,11,0.3);
+  }
+
+  .msg-bubble {
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 640px;
+  }
+
+  .msg.teacher .msg-bubble {
+    background: rgba(26,46,74,0.7);
+    border: 1px solid rgba(184,134,11,0.2);
+    color: rgba(245,237,214,0.9);
+    border-top-left-radius: 4px;
+  }
+
+  .msg.user .msg-bubble {
+    background: rgba(74,46,14,0.6);
+    border: 1px solid rgba(184,134,11,0.25);
+    color: rgba(245,237,214,0.85);
+    border-top-right-radius: 4px;
+  }
+
+  .msg-name {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    opacity: 0.55;
+  }
+
+  .teacher .msg-name { color: var(--gold); }
+  .user .msg-name { color: var(--parchment-deep); text-align: right; }
+
+  .msg-bubble strong { color: var(--gold-bright); }
+  .msg-bubble em { color: rgba(245,237,214,0.65); }
+
+  .scripture-quote {
+    background: rgba(184,134,11,0.1);
+    border-left: 3px solid var(--gold);
+    padding: 10px 16px;
+    margin: 10px 0;
+    font-style: italic;
+    color: rgba(245,237,214,0.75);
+    border-radius: 0 6px 6px 0;
+  }
+
+  .scripture-quote cite {
+    display: block;
+    font-style: normal;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold);
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+
+  .typing-indicator {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 10px 14px;
+  }
+
+  .typing-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: typing 1.2s infinite;
+    opacity: 0.5;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* ── INPUT AREA ── */
+  .input-area {
+    padding: 16px 24px 20px;
+    border-top: 1px solid rgba(184,134,11,0.15);
+    background: rgba(10,8,4,0.5);
+    flex-shrink: 0;
+  }
+
+  .quick-prompts {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .quick-btn {
+    background: rgba(245,237,214,0.05);
+    border: 1px solid rgba(245,237,214,0.12);
+    color: rgba(245,237,214,0.5);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Crimson Pro', serif;
+  }
+
+  .quick-btn:hover {
+    background: rgba(184,134,11,0.12);
+    border-color: rgba(184,134,11,0.35);
+    color: var(--gold);
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .chat-input {
+    flex: 1;
+    background: rgba(245,237,214,0.06);
+    border: 1px solid rgba(245,237,214,0.15);
+    color: var(--parchment);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 15px;
+    resize: none;
+    min-height: 48px;
+    max-height: 140px;
+    outline: none;
+    line-height: 1.5;
+    transition: border-color 0.2s;
+  }
+
+  .chat-input:focus {
+    border-color: rgba(184,134,11,0.45);
+    background: rgba(245,237,214,0.08);
+  }
+
+  .chat-input::placeholder { color: rgba(245,237,214,0.25); }
+
+  .send-btn {
+    background: linear-gradient(135deg, #8b6914, #b8860b);
+    border: none;
+    color: #1a0a00;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .send-btn:hover { background: linear-gradient(135deg, #b8860b, #d4a017); transform: scale(1.04); }
+  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* ── QUIZ VIEW ── */
+  .quiz-view {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 36px 32px 60px;
+  }
+
+  .quiz-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .quiz-header h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--parchment);
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+
+  .quiz-header p {
+    color: rgba(245,237,214,0.45);
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  .quiz-card {
+    background: rgba(245,237,214,0.04);
+    border: 1px solid rgba(245,237,214,0.1);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .quiz-card.answered-correct { border-color: rgba(74,158,74,0.5); background: rgba(74,158,74,0.06); }
+  .quiz-card.answered-wrong { border-color: rgba(158,74,74,0.5); background: rgba(158,74,74,0.06); }
+
+  .quiz-q-text {
+    color: rgba(245,237,214,0.85);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .quiz-q-num {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .quiz-option {
+    background: rgba(245,237,214,0.04);
+    border: 1px solid rgba(245,237,214,0.1);
+    color: rgba(245,237,214,0.65);
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Crimson Pro', serif;
+    font-size: 14.5px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .quiz-option:hover:not(:disabled) {
+    border-color: rgba(184,134,11,0.4);
+    background: rgba(184,134,11,0.08);
+    color: var(--parchment);
+  }
+
+  .quiz-option.correct { border-color: #4a9e4a; background: rgba(74,158,74,0.12); color: #8eda8e; }
+  .quiz-option.wrong { border-color: #9e4a4a; background: rgba(158,74,74,0.1); color: #da8e8e; }
+  .quiz-option.reveal-correct { border-color: #4a9e4a; background: rgba(74,158,74,0.08); color: #8eda8e; opacity: 0.7; }
+  .quiz-option:disabled { cursor: default; }
+
+  .option-letter {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    min-width: 22px;
+    height: 22px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  .quiz-feedback {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .quiz-feedback.correct-fb { background: rgba(74,158,74,0.1); border: 1px solid rgba(74,158,74,0.25); color: #8eda8e; }
+  .quiz-feedback.wrong-fb { background: rgba(158,74,74,0.1); border: 1px solid rgba(158,74,74,0.25); color: #da8e8e; }
+
+  .quiz-score-bar {
+    background: rgba(245,237,214,0.04);
+    border: 1px solid rgba(184,134,11,0.25);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .score-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: conic-gradient(var(--gold) 0%, transparent 0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    color: var(--gold-bright);
+    border: 2px solid rgba(184,134,11,0.3);
+    flex-shrink: 0;
+  }
+
+  .score-text h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--parchment);
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .score-text p { color: rgba(245,237,214,0.45); font-size: 13px; font-style: italic; }
+
+  /* ── VIDEO LINKS ── */
+  .video-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+
+  .video-card {
+    background: rgba(26,46,74,0.5);
+    border: 1px solid rgba(184,134,11,0.2);
+    border-radius: 8px;
+    padding: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .video-card:hover {
+    border-color: rgba(184,134,11,0.5);
+    background: rgba(26,46,74,0.7);
+    transform: translateY(-2px);
+  }
+
+  .video-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(184,134,11,0.2);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .video-info .v-title {
+    color: var(--parchment);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+
+  .video-info .v-sub {
+    color: rgba(245,237,214,0.4);
+    font-size: 11.5px;
+    font-style: italic;
+  }
+
+  /* ── WELCOME SCREEN ── */
+  .welcome-screen {
+    max-width: 680px;
+    margin: 40px auto;
+    padding: 0 32px 60px;
+    text-align: center;
+  }
+
+  .welcome-cross {
+    font-size: 52px;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 0 20px rgba(212,160,23,0.5));
+  }
+
+  .welcome-screen h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--parchment);
+    font-size: 34px;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .welcome-screen .subtitle {
+    color: rgba(245,237,214,0.5);
+    font-size: 16px;
+    font-style: italic;
+    margin-bottom: 36px;
+  }
+
+  .welcome-verse {
+    background: rgba(184,134,11,0.08);
+    border: 1px solid rgba(184,134,11,0.2);
+    border-radius: 8px;
+    padding: 24px 32px;
+    margin-bottom: 32px;
+    text-align: left;
+  }
+
+  .welcome-verse p {
+    color: rgba(245,237,214,0.75);
+    font-size: 17px;
+    font-style: italic;
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+
+  .welcome-verse cite {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+  }
+
+  .start-btn {
+    background: linear-gradient(135deg, #8b6914, #b8860b);
+    border: none;
+    color: #1a0a00;
+    padding: 14px 40px;
+    border-radius: 6px;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .start-btn:hover {
+    background: linear-gradient(135deg, #b8860b, #d4a017);
+    transform: scale(1.03);
+  }
+
+  /* Helpers */
+  .hidden { display: none !important; }
+  .loading-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 0;
+    gap: 12px;
+    color: rgba(245,237,214,0.4);
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  @media (max-width: 760px) {
+    .app-wrapper { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .video-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── STUDENT INSTRUCTION BOX ── */
+  .student-instructions {
+    background: linear-gradient(135deg, rgba(26,46,74,0.7) 0%, rgba(20,36,20,0.6) 100%);
+    border: 1px solid rgba(100,180,100,0.35);
+    border-left: 4px solid #4a9e4a;
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+  }
+  .si-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .si-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #4a9e4a;
+    background: rgba(74,158,74,0.12);
+    border: 1px solid rgba(74,158,74,0.3);
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+  .si-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--parchment);
+    font-size: 15px;
+  }
+  .si-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .si-step {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    color: rgba(245,237,214,0.75);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .si-step-num {
+    width: 22px;
+    height: 22px;
+    background: rgba(74,158,74,0.2);
+    border: 1px solid rgba(74,158,74,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    color: #4a9e4a;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  /* ── TEST HIGHLIGHT BOX ── */
+  .test-highlights {
+    background: rgba(184,134,11,0.06);
+    border: 1px solid rgba(184,134,11,0.25);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+  .th-header {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .th-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .th-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 13.5px;
+    color: rgba(245,237,214,0.72);
+    line-height: 1.5;
+  }
+  .th-star { color: var(--gold); flex-shrink: 0; font-size: 12px; margin-top: 2px; }
+  .th-item strong { color: var(--gold-bright); }
+
+</style>
+</head>
+<body>
+<div class="app-wrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="cross-icon">✝</span>
+      <div class="sidebar-title">THE GOSPELS</div>
+      <div class="sidebar-sub">7th Grade · 9 Weeks</div>
+    </div>
+    <nav class="week-list" id="weekNav"></nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="mainArea">
+    <!-- Welcome screen shown by default -->
+    <div id="welcomeView" class="content-area">
+      <div class="welcome-screen">
+        <div class="welcome-cross">✝</div>
+        <h1>Welcome to The Gospels</h1>
+        <p class="subtitle">A 9-Week Journey Through the Life of Jesus Christ</p>
+        <div class="welcome-verse">
+          <p>"These are written so that you may believe that Jesus is the Christ, the Son of God, and that by believing you may have life in his name."</p>
+          <cite>— JOHN 20:31</cite>
+        </div>
+        <p style="color:rgba(245,237,214,0.5);font-size:14px;margin-bottom:24px;line-height:1.7;">
+          I'm your teacher for this course. Each week we'll explore the life and teachings of Jesus together —<br>
+          you can ask me questions, take quizzes, and dive deep into any topic.<br>
+          <strong style="color:var(--gold);">Choose a week from the sidebar to begin.</strong>
+        </p>
+        <button class="start-btn" onclick="loadWeek(1)">BEGIN WEEK 1 →</button>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+// ─── CURRICULUM DATA ──────────────────────────────────────────────────────────
+const CURRICULUM = {
+  weeks: [
+    {
+      num: 1,
+      title: "Introduction to the Gospels",
+      theme: "Setting the Stage — The World Into Which Jesus Came",
+      scripture: "John 1:1–14; Luke 1:1–4; John 20:30–31",
+      overview: "We'll explore the four Gospels — who wrote them, who they were written for, and why God gave us four accounts instead of one. We'll establish the foundation: these are inspired, inerrant accounts revealing the Son of God.",
+      videos: [
+        { title: "Matthew 1–13 Overview", url: "https://bibleproject.com/videos/matthew-1-13/", desc: "Matthew's Gospel — The Bible Project" },
+        { title: "Mark Overview", url: "https://bibleproject.com/videos/mark/", desc: "Mark's Gospel — The Bible Project" },
+        { title: "Luke 1–9 Overview", url: "https://bibleproject.com/videos/luke-1-9/", desc: "Luke's Gospel — The Bible Project" },
+        { title: "John 1–12 Overview", url: "https://bibleproject.com/videos/john-1-12/", desc: "John's Gospel — The Bible Project" },
+      ],
+      days: [
+        { day: "Monday", title: "What Is a Gospel?", focus: "The word 'Gospel' (Greek: euangelion) means Good News. John 20:30–31 tells us exactly why these were written: so we would believe Jesus is the Christ, the Son of God, and have life in His name. God chose four human authors, each with a different perspective, to give us a rich and complete picture of Jesus." },
+        { day: "Tuesday", title: "Matthew & Mark", focus: "Matthew was a tax collector writing for a Jewish audience — he quotes the Old Testament constantly to show Jesus is the promised Messiah-King. Mark was the action Gospel, written for Romans, using the word 'immediately' again and again. Two very different men, one divine subject." },
+        { day: "Wednesday", title: "Luke & John", focus: "Luke was a physician — his Gospel is the most historically detailed, written for Gentiles, showing Jesus as Savior of all people. John is the theological Gospel, written to prove Jesus is the eternal Son of God. John 1:1 begins not with a birth story but with eternity: 'In the beginning was the Word.'" },
+        { day: "Thursday", title: "The World Jesus Entered", focus: "Israel was under Roman occupation. There were Pharisees (strict law-followers), Sadducees (aristocratic skeptics), and Scribes (law teachers). The Jewish people longed for a Messiah. But God's timing was perfect — Galatians 4:4 says Jesus came 'in the fullness of time.'" },
+        { day: "Friday", title: "The Four Openings", focus: "Compare how each Gospel begins: Matthew opens with a genealogy (Jesus is the promised King), Mark opens with action (Jesus the Servant is here!), Luke opens with careful research (Luke 1:1–4), and John opens in eternity: 'In the beginning was the Word, and the Word was with God, and the Word was God.'" },
+      ],
+      quiz: [
+        { q: "What does the word 'Gospel' mean?", options: ["Law of God", "Good News", "Holy Scripture", "The New Testament"], correct: 1 },
+        { q: "Which Gospel was written for a Jewish audience to show Jesus as the promised Messiah-King?", options: ["Mark", "Luke", "John", "Matthew"], correct: 3 },
+        { q: "John 1:1 ends with 'the Word was ___.'", options: ["holy", "mighty", "God", "eternal"], correct: 2 },
+        { q: "Which Gospel author was a physician?", options: ["Matthew", "Mark", "Luke", "John"], correct: 2 },
+        { q: "According to John 20:30–31, why was John's Gospel written?", options: ["To document history", "So readers would believe Jesus is the Son of God and have life", "To correct errors in the other Gospels", "To teach about the Law"], correct: 1 },
+        { q: "The term for Scripture being 'breathed out by God' is: (2 Tim. 3:16)", options: ["Illumination", "Canonization", "Inspiration", "Revelation"], correct: 2 },
+        { q: "Mark's Gospel most often uses which word to describe Jesus's actions?", options: ["Boldly", "Immediately", "Graciously", "Slowly"], correct: 1 },
+        { q: "Which Gospel focuses most heavily on Jesus as the eternal Son of God?", options: ["Matthew", "Mark", "Luke", "John"], correct: 3 },
+      ]
+    },
+    {
+      num: 2,
+      title: "The Birth & Early Life of Jesus",
+      theme: "God With Us — The Incarnation",
+      scripture: "Matthew 1–2; Luke 1–2; John 1:14; Isaiah 7:14",
+      overview: "We'll study the miraculous birth of Jesus and what it means that God became human. The Incarnation is the most stunning event in human history: the infinite, eternal God entered time as a baby. We'll see how it was planned from before creation and foretold by prophets.",
+      videos: [
+        { title: "New Testament Overview", url: "https://bibleproject.com/videos/new-testament-overview/", desc: "The full NT story — The Bible Project" },
+        { title: "The Story of the Bible", url: "https://bibleproject.com/videos/the-story-of-the-bible/", desc: "Context for the Messiah's coming" },
+      ],
+      days: [
+        { day: "Monday", title: "The Annunciation", focus: "Luke 1:26–38 — Angel Gabriel visits Mary. Matthew 1:18–25 — Joseph's response. The Holy Spirit overshadows Mary, and Jesus is conceived without a human father. This is essential: Jesus must be sinless to save sinners, so He cannot inherit the sin nature. Mary's response — 'Let it be to me according to your word' — is a model of faith." },
+        { day: "Tuesday", title: "Prophecies Fulfilled", focus: "Isaiah 7:14 predicted a virgin birth — 'Immanuel' means 'God with us.' Micah 5:2 predicted Bethlehem as the birthplace. Hosea 11:1 predicted the flight to Egypt. God used a Roman census to move Mary and Joseph to Bethlehem. Even a pagan emperor served God's purposes without knowing it." },
+        { day: "Wednesday", title: "The Nativity & the Incarnation", focus: "Luke 2:1–20 — The King of all creation born in a stable, announced to shepherds (the lowest of society). Philippians 2:6–8 says Jesus 'emptied Himself' — this is called the kenosis. He didn't stop being God, but He voluntarily laid aside the exercise of divine privileges to walk among us. This is breathtaking humility." },
+        { day: "Thursday", title: "The Magi & Flight to Egypt", focus: "Matthew 2 — Wise men from the East follow a star to worship the Christ child. Herod, threatened, plots to kill Jesus. God warns the Magi in a dream; the family flees to Egypt. God's sovereignty is clear: He protects His Son, orchestrates world events, and even uses Herod's evil for good purposes." },
+        { day: "Friday", title: "Jesus at the Temple (Age 12)", focus: "Luke 2:41–52 — The first recorded words of Jesus: 'Did you not know I must be in my Father's house?' At age 12, Jesus shows complete clarity about His identity. Yet Luke 2:52 also says He grew in wisdom — He was fully and genuinely human. He grew up. He got tired. He wept. This is the wonder of the Incarnation." },
+      ],
+      quiz: [
+        { q: "What does the name 'Immanuel' mean?", options: ["Son of David", "God is mighty", "God with us", "Prince of Peace"], correct: 2 },
+        { q: "Which prophet predicted Jesus would be born in Bethlehem?", options: ["Isaiah", "Hosea", "Micah", "Zechariah"], correct: 2 },
+        { q: "John 1:14 says 'The Word became ___.'", options: ["spirit", "light", "flesh", "king"], correct: 2 },
+        { q: "The theological term for God becoming human in Jesus is:", options: ["Atonement", "Incarnation", "Sanctification", "Revelation"], correct: 1 },
+        { q: "Who was the FIRST to hear about Jesus's birth from angels?", options: ["Magi from the East", "King Herod", "Shepherds in the fields", "The High Priest"], correct: 2 },
+        { q: "Jesus's first recorded words were:", options: ["Follow me.", "I am the Way.", "Did you not know I must be in my Father's house?", "The Kingdom is at hand."], correct: 2 },
+        { q: "Philippians 2:6–8 describes Jesus 'emptying Himself.' This is called:", options: ["The Resurrection", "The Kenosis", "The Ascension", "The Transfiguration"], correct: 1 },
+        { q: "Why is the virgin birth important theologically?", options: ["It fulfilled all Mosaic Law requirements", "It allowed Jesus to be born sinless — making Him a perfect sacrifice", "It showed Mary's special righteousness", "It was required for Roman citizenship"], correct: 1 },
+      ]
+    },
+    {
+      num: 3,
+      title: "Baptism, Temptation & Ministry Launch",
+      theme: "The Servant King Begins His Mission",
+      scripture: "Matthew 3–4; Mark 1:1–20; Luke 3–4; John 1:19–51",
+      overview: "Three pivotal events launch Jesus's public ministry: His baptism (where all three persons of the Trinity appear simultaneously), His temptation in the wilderness (where He defeats Satan with Scripture), and His calling of the first disciples. Each reveals something essential about who Jesus is.",
+      videos: [
+        { title: "The Holy Spirit", url: "https://bibleproject.com/videos/holy-spirit/", desc: "Understanding the Spirit — The Bible Project" },
+        { title: "Satan and Demons", url: "https://bibleproject.com/explore/video/satan-demons/", desc: "Spiritual beings — The Bible Project" },
+      ],
+      days: [
+        { day: "Monday", title: "John the Baptist", focus: "John the Baptist was the prophesied 'voice in the wilderness' from Isaiah 40:3 — preparing people for the Messiah through baptism and a call to repentance. He said he baptized with water, but One was coming who would baptize with the Holy Spirit. John's entire existence points away from himself and toward Jesus." },
+        { day: "Tuesday", title: "The Baptism — The Trinity Revealed", focus: "Matthew 3:13–17 — Three persons of the Trinity visible at once: the Son in the water, the Spirit descending as a dove, the Father's voice declaring: 'This is my beloved Son, in whom I am well pleased.' Why was the sinless Jesus baptized? He said 'to fulfill all righteousness' — identifying with sinners He came to save, launching His mission on our behalf." },
+        { day: "Wednesday", title: "The Temptation — The Last Adam", focus: "Matthew 4:1–11 — Satan attacks Jesus three times: physical appetite, testing God, and worldly power. Jesus answers each time with Deuteronomy. This is the reversal of Eden: Adam was tempted in a garden with food and failed; Jesus was tempted in a desert with fasting and won. He succeeds as the 'last Adam' (1 Cor. 15:45) where the first Adam failed." },
+        { day: "Thursday", title: "The First Disciples", focus: "Matthew 4:18–22 — 'Follow me.' Two words. The fishermen immediately left their nets. This wasn't a polite invitation — it was a sovereign call with irresistible authority. In John 1, Andrew's first response to meeting Jesus is to run and find his brother Peter. True encounters with Jesus produce an irresistible desire to tell others." },
+        { day: "Friday", title: "The Kingdom Has Come", focus: "Matthew 4:17 and Mark 1:15 — Jesus's first preaching: 'Repent, for the kingdom of heaven is at hand.' The Kingdom of God is not a territory — it's God's sovereign rule, arriving in the Person of Jesus. Every miracle, every teaching, every healing is a declaration: God is King here. Repentance is the door in." },
+      ],
+      quiz: [
+        { q: "What happened immediately after Jesus was baptized? (Matt. 3:16–17)", options: ["He began preaching in a synagogue", "The Spirit descended as a dove and the Father spoke from heaven", "He was tempted by Satan", "He called His first disciples"], correct: 1 },
+        { q: "How did Jesus respond to each of Satan's three temptations?", options: ["By praying aloud to the Father", "By quoting Old Testament Scripture", "By commanding Satan to leave", "By performing a miracle"], correct: 1 },
+        { q: "Jesus's first public message (Mark 1:15) was:", options: ["Love your neighbor as yourself", "Blessed are the poor in spirit", "Repent and believe in the Gospel", "The Son of Man came to seek and save the lost"], correct: 2 },
+        { q: "Who was the 'voice in the wilderness' from Isaiah 40:3?", options: ["The Apostle Peter", "The Apostle John", "Elijah the prophet", "John the Baptist"], correct: 3 },
+        { q: "Jesus is the 'last Adam' (1 Cor. 15:45) because:", options: ["He was the last of Adam's descendants", "He succeeded where Adam failed — resisting temptation and reversing sin's curse", "He was the final human created by God", "He lived longer than Adam"], correct: 1 },
+        { q: "The Trinity was visibly revealed at Jesus's baptism. Which is correct?", options: ["Jesus baptized, Spirit as fire, Father in a cloud", "Jesus in the water, Spirit as a dove, Father's voice from heaven", "Jesus praying, Spirit as wind, Father in a vision", "Jesus speaking, Spirit as light, Father on a throne"], correct: 1 },
+        { q: "Jesus promised the fishermen He would make them:", options: ["Priests of God", "Fishers of men", "Rulers in the Kingdom", "Prophets of Israel"], correct: 1 },
+        { q: "What does it mean that the Kingdom of God 'is at hand'?", options: ["God's military kingdom is about to arrive", "God's sovereign rule has arrived in the Person of Jesus", "The end of the world is near", "The Temple will soon be rebuilt"], correct: 1 },
+      ]
+    },
+    {
+      num: 4,
+      title: "Teachings: Sermon on the Mount & Parables",
+      theme: "Kingdom Ethics — What God's Character Looks Like Lived Out",
+      scripture: "Matthew 5–7; Luke 15; Matthew 13; Mark 4",
+      overview: "Jesus's greatest teaching — the Sermon on the Mount — and His parables flip the world's values upside down. The Kingdom of God looks radically different from every human system. Through the Beatitudes, the Lord's Prayer, and stories about lost sheep, we see both the character of God and the life He calls us to.",
+      videos: [
+        { title: "Sermon on the Mount (Matthew 5–7)", url: "https://bibleproject.com/videos/matthew-5-7-sermon-overview/", desc: "Matthew 5–7 — The Bible Project" },
+        { title: "How to Read the Parables of Jesus", url: "https://bibleproject.com/videos/how-to-read-the-bible-the-parables-of-jesus/", desc: "Why Jesus taught in parables" },
+      ],
+      days: [
+        { day: "Monday", title: "The Beatitudes", focus: "Matthew 5:1–12 — Eight declarations of who is 'blessed' (makarios = deeply, truly happy). The world says: blessed are the strong, the wealthy, the popular. Jesus says: blessed are the poor in spirit, the mournful, the meek, the merciful, the pure in heart. These aren't rules to follow — they're descriptions of someone who has been transformed by grace." },
+        { day: "Tuesday", title: "Salt, Light & the Law", focus: "Matthew 5:13–48 — Christians are salt and light: active agents who preserve goodness and illuminate truth in the world. Jesus then deepens the Law: anger is the seed of murder; lust is the seed of adultery. God doesn't just care about what you do — He cares about what you want. The heart is always the issue." },
+        { day: "Wednesday", title: "Prayer, Fasting & Trust", focus: "Matthew 6 — The Lord's Prayer puts God first: His name, His Kingdom, His will — before our needs. 'Do not worry' (vv.25–34) is not a suggestion; it's a command grounded in who God is. If He feeds birds and clothes wildflowers, He will certainly care for His children. Worry is ultimately a failure to trust the Father's character." },
+        { day: "Thursday", title: "The Lost Son, Sheep & Coin", focus: "Luke 15 — Three parables told in one sitting because the Pharisees were grumbling that Jesus ate with sinners. A shepherd leaves 99 sheep to find one. A woman sweeps her whole house for one coin. A father RUNS to embrace a returning son. This is God. He doesn't wait for us to clean up. He runs toward us while we are still far off." },
+        { day: "Friday", title: "The Parable of the Sower", focus: "Matthew 13; Mark 4 — The same seed (God's Word) is sown on four soils (four types of hearts). Hard soil: the Word bounces off. Shallow soil: excitement without roots. Thorny soil: choked by worries and distractions. Good soil: the Word takes root and produces abundant fruit. The question isn't about the seed — it's always about the condition of your heart." },
+      ],
+      quiz: [
+        { q: "The first Beatitude: 'Blessed are the poor in spirit, for ___.'", options: ["they shall see God", "they shall be comforted", "theirs is the kingdom of heaven", "they shall inherit the earth"], correct: 2 },
+        { q: "In the Lord's Prayer, what comes BEFORE asking for daily bread?", options: ["Forgive us our debts", "Deliver us from evil", "Your kingdom come, Your will be done", "Lead us not into temptation"], correct: 2 },
+        { q: "In the Parable of the Prodigal Son, what did the father do when he saw his son returning?", options: ["Waited at the door", "Sent a servant to meet him", "Ran to embrace him", "Asked him to prove his repentance first"], correct: 2 },
+        { q: "In the Parable of the Sower, what does the 'seed' represent?", options: ["The disciples", "The Kingdom of God", "The Word of God / the Gospel", "The Holy Spirit"], correct: 2 },
+        { q: "Jesus said lust in the heart is equivalent to:", options: ["Divorce", "Adultery", "Murder", "Idolatry"], correct: 1 },
+        { q: "Matthew 6:33 says: 'Seek first ___.'", options: ["your daily needs", "wisdom and knowledge", "the kingdom of God and His righteousness", "peace and rest"], correct: 2 },
+        { q: "Salt and light metaphors (Matt. 5) mean Christians should:", options: ["Hide their faith privately", "Actively influence and illuminate the world around them", "Separate from all non-Christians", "Focus only on spiritual activities"], correct: 1 },
+        { q: "The three 'lost and found' parables (Luke 15) were told in response to:", options: ["Disciples asking about prayer", "Pharisees criticizing Jesus for eating with sinners", "The rich young ruler's question", "A crowd asking about eternal life"], correct: 1 },
+      ]
+    },
+    {
+      num: 5,
+      title: "Miracles: Signs of Divine Authority",
+      theme: "Jesus Demonstrates Who He Is — Lord Over All Creation",
+      scripture: "John 2:1–11; Mark 4:35–41; John 11; Matthew 14:22–33; Mark 5",
+      overview: "John calls Jesus's miracles 'signs' — they point beyond themselves to His divine identity. Each miracle reveals a different dimension of Christ's authority: over nature, over sickness, over spiritual forces, and over death itself. We'll look at five key miracles and what each one declares about who Jesus is.",
+      videos: [
+        { title: "John 1–12 Overview", url: "https://bibleproject.com/videos/john-1-12/", desc: "Signs & miracles — The Bible Project" },
+        { title: "Luke 10–24 Overview", url: "https://bibleproject.com/videos/luke-10-24/", desc: "Jesus's journey & resurrection — BibleProject" },
+      ],
+      days: [
+        { day: "Monday", title: "Water to Wine — First Sign", focus: "John 2:1–11 — A wedding in Cana. Jesus transforms water from six stone purification jars (representing the Old Covenant religious system) into the finest wine in abundant quantities. John 2:11 says this 'revealed his glory.' A sign points beyond itself — this miracle says: Jesus transforms the old and insufficient into something new, abundant, and far better." },
+        { day: "Tuesday", title: "Calming the Storm — Lord of Creation", focus: "Mark 4:35–41 — A violent storm on Galilee. Jesus is asleep in the boat (fully human, genuinely tired). The terrified disciples wake Him. He says two words — 'Peace, be still' — and the sea goes flat. The disciples ask 'Who is this?' The answer: Psalm 89:9 says only God controls the seas. Standing in the boat is YHWH in human flesh." },
+        { day: "Wednesday", title: "Healing in Mark 5", focus: "Mark 5:1–43 — Three miracles woven together: a Gentile demoniac, a Jewish woman who'd been bleeding for 12 years, and a synagogue leader's daughter. Rich and poor. Jew and Gentile. Men and women. Jesus heals across every social boundary. The demons even declare His identity: 'Son of the Most High God.' His own people sometimes doubted; the demons never did." },
+        { day: "Thursday", title: "Walking on Water — I AM", focus: "Matthew 14:22–33 — After feeding 5,000, Jesus walks on water toward the disciples in a storm. 'Take courage! It is I.' In Greek, ego eimi — 'I AM' — the divine name God revealed to Moses. Peter steps out and walks too, until he looks at the waves. He sinks. Jesus's hand is immediate: 'Why did you doubt?' Faith is not determined by the size of your storm but by where your eyes are fixed." },
+        { day: "Friday", title: "Lazarus — Lord Over Death", focus: "John 11 — Jesus deliberately delays two days after hearing Lazarus is sick. He arrives after Lazarus has been dead four days. He weeps with Mary and Martha. 'Jesus wept' — the shortest verse in Scripture and one of the most profound: God is genuinely moved by human grief. Then He commands the dead man to come out. Death itself obeys. 'I am the resurrection and the life.'" },
+      ],
+      quiz: [
+        { q: "John calls Jesus's miracles 'signs.' Their primary purpose is:", options: ["To attract large crowds", "To reveal Jesus's divine identity and produce faith", "To fulfill every Old Testament prophecy", "To show Jesus was greater than Moses"], correct: 1 },
+        { q: "Psalm 89:9 says only God controls the sea — this connects to which miracle?", options: ["Feeding the 5,000", "Healing the blind man", "Calming the storm", "Turning water to wine"], correct: 2 },
+        { q: "John 11:35 ('Jesus wept') shows:", options: ["Jesus was afraid of the religious leaders", "God is genuinely moved by human grief — He is with us in our pain", "Jesus had forgotten He could raise Lazarus", "Jesus was performing for the crowd"], correct: 1 },
+        { q: "When Jesus said 'It is I' walking on water (ego eimi), He was using:", options: ["A common Hebrew greeting", "God's divine name — 'I AM' from Exodus 3:14", "A title meaning Son of David", "A way of identifying Himself to the disciples"], correct: 1 },
+        { q: "Jesus said before raising Lazarus: 'I am the ___.'", options: ["Way, Truth, and Life", "Good Shepherd", "Resurrection and the Life", "Light of the World"], correct: 2 },
+        { q: "In Mark 5, the demons called Jesus:", options: ["Teacher and Lord", "'Son of the Most High God'", "King of Israel", "Prophet of God"], correct: 1 },
+        { q: "Peter began to sink while walking on water because:", options: ["His faith wasn't genuine", "He looked at the storm instead of keeping his eyes on Jesus", "Jesus withdrew His power", "He hadn't been baptized yet"], correct: 1 },
+        { q: "At the Wedding of Cana, Jesus used water from:", options: ["Clay cooking pots", "Wooden wine barrels", "Stone purification jars", "Bronze offering vessels"], correct: 2 },
+      ]
+    },
+    {
+      num: 6,
+      title: "The 'I AM' Statements of Jesus",
+      theme: "Jesus Declares His Divine Identity in His Own Words",
+      scripture: "John 6:35; 8:12; 10:9; 10:11; 11:25; 14:6; 15:1",
+      overview: "In John's Gospel, Jesus makes seven 'I AM' statements — each using the divine name God revealed to Moses in Exodus 3:14. Each statement reveals a different dimension of His identity and the provision He offers. Together, they constitute the most explicit self-declaration of divinity in all of human literature.",
+      videos: [
+        { title: "John 1–12 Overview", url: "https://bibleproject.com/videos/john-1-12/", desc: "Jesus's divine claims in John" },
+        { title: "John 13–21 Overview", url: "https://bibleproject.com/videos/john-13-21/", desc: "The Gospel of John overview" },
+      ],
+      days: [
+        { day: "Monday", title: "Bread & Light", focus: "John 6:35 — 'I am the Bread of Life.' After feeding 5,000 with physical bread, Jesus declares He is the bread that satisfies the deepest spiritual hunger. No one who comes to Him will ever hunger or thirst again. John 8:12 — 'I am the Light of the World.' In Genesis 1, God's first words were 'Let there be light.' Jesus IS that light — the one who illuminates truth and drives out spiritual darkness." },
+        { day: "Tuesday", title: "The Gate & the Good Shepherd", focus: "John 10:9 — 'I am the Gate.' There is one way into the sheepfold — through Him. Exclusive and clear. John 10:11 — 'I am the Good Shepherd' who lays down His life for the sheep. Contrast: a hired hand runs when wolves come; the shepherd dies for the flock. Ezekiel 34 records God promising to personally come and shepherd Israel. That promise is standing in front of them. Jesus IS that shepherd." },
+        { day: "Wednesday", title: "Resurrection & The Way", focus: "John 11:25 — 'I am the Resurrection and the Life.' Not someone who can perform a resurrection — He IS resurrection. John 14:6 — The most controversial verse in all of Jesus's teaching: 'I am the Way, and the Truth, and the Life. No one comes to the Father except through me.' This is either the most important claim ever made, or the most arrogant lie ever told. It cannot be ignored." },
+        { day: "Thursday", title: "The True Vine", focus: "John 15:1 — 'I am the True Vine.' Israel was called God's vine (Isaiah 5; Psalm 80) — but they repeatedly failed and bore no fruit. Jesus declares Himself the vine Israel was supposed to be. The key command: 'Abide in me.' Stay connected. A branch doesn't produce fruit by straining harder — it produces fruit by staying attached to the vine. The Christian life is not self-improvement; it's abiding." },
+        { day: "Friday", title: "Lord, Liar, or Lunatic?", focus: "C.S. Lewis argued that a man who said the things Jesus said was one of three things: Lord (the claims are true), Liar (He knew they were false), or Lunatic (He believed false things about Himself). The option most people prefer — 'good moral teacher' — is logically impossible. A good moral teacher doesn't claim to be God. Jesus forces a decision. These statements demand a response." },
+      ],
+      quiz: [
+        { q: "How many 'I AM' statements does Jesus make in John's Gospel?", options: ["Four", "Five", "Six", "Seven"], correct: 3 },
+        { q: "'I am the Bread of Life' (John 6:35) means Jesus:", options: ["Will always provide physical food", "Is the source of spiritual satisfaction and eternal life", "Was the manna in the wilderness physically", "Feeds only those who obey the Law"], correct: 1 },
+        { q: "John 14:6: 'I am the Way, the Truth, and the ___.'", options: ["Light", "Door", "Life", "Shepherd"], correct: 2 },
+        { q: "Jesus claiming to be the Good Shepherd (John 10:11) fulfills God's promise in:", options: ["Isaiah 53", "Ezekiel 34 — God would personally come to shepherd Israel", "Psalm 23 only", "Daniel 7"], correct: 1 },
+        { q: "'I am the True Vine' (John 15:1) refers to Israel's failure as God's:", options: ["shepherd flock", "vine (Isaiah 5; Psalm 80)", "chosen kingdom", "holy mountain"], correct: 1 },
+        { q: "'No one comes to the Father except through me' (John 14:6) means:", options: ["Jesus is the best path among several to God", "Jesus is the only path to God — salvation is exclusive", "Jesus is the best teacher of God's law", "Jesus will personally take believers to heaven"], correct: 1 },
+        { q: "C.S. Lewis's 'Lord, Liar, or Lunatic' argument proves Jesus cannot simply be:", options: ["A divine being", "The Messiah of Israel", "Just a good moral teacher", "A historical figure"], correct: 2 },
+        { q: "To 'abide' in Jesus (John 15:4) means:", options: ["Attending church weekly", "Remaining in constant, dependent connection to Jesus as the source of life", "Following all of Jesus's commands perfectly", "Memorizing large portions of Scripture"], correct: 1 },
+      ]
+    },
+    {
+      num: 7,
+      title: "Transfiguration & Road to Jerusalem",
+      theme: "The Glory and the Cross — Seeing Jesus Before He Dies",
+      scripture: "Matthew 17:1–9; Luke 9:51–62; Mark 10:32–45; Luke 19",
+      overview: "We'll witness the Transfiguration — God pulling back the curtain to reveal Jesus's divine glory — and then watch as Jesus 'resolutely sets His face toward Jerusalem' knowing He is going to die. His willing march to the cross is one of the most powerful proofs of His love and purpose.",
+      videos: [
+        { title: "Matthew 14–28 Overview", url: "https://bibleproject.com/videos/matthew-14-28/", desc: "Jesus's journey to Jerusalem" },
+        { title: "Sacrifice and Atonement", url: "https://bibleproject.com/videos/sacrifice-and-atonement/", desc: "Sacrifice background — The Bible Project" },
+      ],
+      days: [
+        { day: "Monday", title: "The Transfiguration", focus: "Matthew 17:1–9 — On a mountain with Peter, James, and John, Jesus's face shines like the sun and His clothes become dazzling white. Moses and Elijah appear — the Law and the Prophets. This is a glimpse of His pre-incarnate glory, normally veiled in His human body. The Father speaks: 'This is my beloved Son; LISTEN TO HIM!' One divine command: listen to Jesus above all voices." },
+        { day: "Tuesday", title: "Setting His Face to Jerusalem", focus: "Luke 9:51 — 'He set his face to go to Jerusalem.' Jesus knew exactly what awaited Him there: arrest, torture, crucifixion. He had predicted it three times (Mark 8, 9, 10). Yet He walked toward it with absolute determination. This is not resignation — it is holy, willing sacrifice. The cross was not something that happened TO Jesus; it was something He chose FOR us." },
+        { day: "Wednesday", title: "Greatness Redefined", focus: "Mark 10:35–45 — James and John ask for the seats of power. Jesus responds: 'Whoever wants to be great among you must be your servant.' Then the revolutionary climax: 'For even the Son of Man came not to be served but to serve, and to give his life as a ransom for many.' The Son of God defines greatness as servanthood. He defines leadership as self-sacrifice. He turns the world upside down." },
+        { day: "Thursday", title: "Zacchaeus & Bartimaeus", focus: "Luke 18:35–43 — Blind Bartimaeus cries out 'Son of David, have mercy on me!' despite the crowd telling him to be quiet. He shouts louder. Jesus stops and heals him. Luke 19:1–10 — Jesus calls up to Zacchaeus in the tree and invites Himself to dinner. The crowd grumbles. Zacchaeus is transformed — he gives away half his wealth. Jesus's verdict: 'Salvation has come to this house today.'" },
+        { day: "Friday", title: "Triumphal Entry & Temple", focus: "Luke 19:28–44 — Jesus enters Jerusalem on a donkey, fulfilling Zechariah 9:9 — a king who comes in peace, not war. The crowd shouts 'Hosanna!' (Save us!). Then Jesus weeps over Jerusalem (Luke 19:41) — the Creator weeping over His creatures who are choosing their own destruction. Then He overturns the tables: 'My house shall be called a house of prayer for ALL nations.'" },
+      ],
+      quiz: [
+        { q: "At the Transfiguration, who appeared with Jesus on the mountain?", options: ["Abraham and Isaac", "Moses and Elijah", "David and Solomon", "Peter and Paul"], correct: 1 },
+        { q: "What did the Father say at the Transfiguration?", options: ["'Go and make disciples'", "'This is my beloved Son; listen to Him!'", "'The Kingdom of God is at hand'", "'All authority is given to Him'"], correct: 1 },
+        { q: "Luke 19:10 — Jesus's mission statement:", options: ["'I came that they may have life abundantly'", "'The Son of Man came not to be served but to serve'", "'The Son of Man came to seek and save the lost'", "'I came to fulfill the Law and Prophets'"], correct: 2 },
+        { q: "Jesus entered Jerusalem on a donkey fulfilling:", options: ["Isaiah 53", "Zechariah 9:9", "Micah 5:2", "Psalm 22"], correct: 1 },
+        { q: "Jesus weeping over Jerusalem (Luke 19:41) reveals:", options: ["Anger at Israel's rebellion", "Genuine grief over those who reject Him — He mourns those choosing destruction", "Sadness that Jerusalem would survive", "That Jesus was not omniscient"], correct: 1 },
+        { q: "Mark 10:44–45 defines true greatness in the Kingdom as:", options: ["Having the greatest faith", "Performing the most miracles", "Being a servant — giving your life for others", "Understanding all of Scripture"], correct: 2 },
+        { q: "Why did Jesus overturn tables in the Temple?", options: ["People weren't following the Law", "Religious leaders were teaching false doctrine", "Money changers were exploiting worshipers and blocking Gentile access to prayer", "Romans had erected an idol inside"], correct: 2 },
+        { q: "Zacchaeus's response to meeting Jesus shows that genuine salvation:", options: ["Requires joining the synagogue", "Results in changed behavior — generosity and making restitution", "Requires public baptism first", "Means memorizing the Torah"], correct: 1 },
+      ]
+    },
+    {
+      num: 8,
+      title: "The Passion: Betrayal, Trial & Crucifixion",
+      theme: "The Lamb of God — The Atoning Death of Jesus",
+      scripture: "Matthew 26–27; Isaiah 53; John 19; Luke 23:34–46",
+      overview: "This is the theological heart of all four Gospels. Everything has been building to this. We'll walk through the Last Supper, Gethsemane, the trials, and the crucifixion — understanding not just what happened, but WHY it had to happen. The cross is where the justice and love of God meet in the most extraordinary way.",
+      videos: [
+        { title: "Sacrifice and Atonement", url: "https://bibleproject.com/videos/sacrifice-and-atonement/", desc: "Sacrifice and atonement background" },
+        { title: "Sacrifice & Atonement", url: "https://bibleproject.com/videos/sacrifice-and-atonement/", desc: "Why Jesus had to die — The Bible Project" },
+      ],
+      days: [
+        { day: "Monday", title: "The Last Supper & Gethsemane", focus: "Matthew 26:17–46 — Jesus takes bread and cup and declares them to be His body and blood, establishing the New Covenant (fulfilling Jeremiah 31:31–34). Then Gethsemane: He prays three times, sweating drops like blood. The 'cup' He asks the Father to remove is not the physical suffering — it's the full wrath of God against all human sin, which He is about to absorb. 'Not my will, but Yours.'" },
+        { day: "Tuesday", title: "Betrayal, Arrest & Trials", focus: "Matthew 26:47–75 — Judas's kiss. Peter's sword. The trial before Caiaphas: 'Are you the Christ?' Jesus replies 'I AM' and quotes Daniel 7 — immediate charge of blasphemy. Pilate three times says 'I find no guilt in him,' yet sentences Him to death. Peter denies Jesus three times and weeps bitterly. The legally innocent One is condemned so that the legally guilty can be forgiven." },
+        { day: "Wednesday", title: "Isaiah 53 & the Crucifixion", focus: "Isaiah 53, written 700 years before Jesus: 'He was pierced for our transgressions, crushed for our iniquities; the punishment that brought us peace was on him, and by his wounds we are healed.' This is substitutionary atonement: Jesus died IN OUR PLACE. God is perfectly just (sin must be punished) and perfectly loving (He wants to forgive us). The cross is where both attributes are satisfied simultaneously." },
+        { day: "Thursday", title: "The Seven Last Words", focus: "Seven sayings from the cross: 1) 'Father, forgive them' — praying for His murderers; 2) 'Today you will be with me in paradise' — to the thief; 3) 'Behold your mother' — caring for Mary; 4) 'My God, why have you forsaken me?' — bearing our separation from God; 5) 'I thirst' — fully human; 6) 'It is finished' (tetelestai — paid in full!); 7) 'Father, into your hands.' Not random — each word is deliberate and profound." },
+        { day: "Friday", title: "The Theology of the Cross", focus: "The Temple curtain tears — the separation between God and humanity is permanently removed. The ground shakes. A Roman centurion (a Gentile!) declares: 'Surely this was the Son of God.' The cross reveals: God's love is not passive — it is costly, sacrificial, and personal. His justice is real — sin cannot be ignored. And the cross is His answer to both. Without it, we have no good news at all." },
+      ],
+      quiz: [
+        { q: "At the Last Supper, the cup represented:", options: ["The blessing of Abraham", "Jesus's blood of the New Covenant", "The Old Covenant Passover lamb", "The coming Holy Spirit"], correct: 1 },
+        { q: "The 'cup' Jesus prayed to avoid in Gethsemane represented:", options: ["His physical suffering", "God's wrath against sin that He would bear", "Judas's betrayal", "Rejection by His disciples"], correct: 1 },
+        { q: "Isaiah 53 was written approximately ___ before the crucifixion:", options: ["300 years", "500 years", "700 years", "1,000 years"], correct: 2 },
+        { q: "The Temple curtain tearing at Jesus's death symbolized:", options: ["The coming destruction of Jerusalem", "The end of all Jewish worship", "Permanent open access to God for all believers through Jesus", "That the Temple was cursed"], correct: 2 },
+        { q: "Jesus's cry 'It is finished' (tetelestai) means:", options: ["His earthly life is over", "The debt of sin is completely paid in full", "The Old Covenant has ended", "His suffering was finally stopping"], correct: 1 },
+        { q: "Substitutionary atonement means:", options: ["Jesus replaced one religion with another", "Jesus took our place, bearing our punishment from a just God", "Jesus atoned through His perfect life only", "Jesus substituted grace for the Law"], correct: 1 },
+        { q: "Jesus's FIRST words from the cross were:", options: ["'It is finished'", "'Today you will be with me in paradise'", "'Father, forgive them, for they know not what they do'", "'My God, why have you forsaken me?'"], correct: 2 },
+        { q: "In Matthew 26:64, Jesus answered the High Priest by saying:", options: ["'I am not who you say I am'", "'That is your word, not mine'", "'I AM — and you will see the Son of Man at God's right hand'", "'Judge based on my miracles'"], correct: 2 },
+      ]
+    },
+    {
+      num: 9,
+      title: "The Resurrection & Great Commission",
+      theme: "Death Is Defeated — The Gospel Goes to All Nations",
+      scripture: "Matthew 28; John 20–21; Luke 24; 1 Cor. 15:1–8; Acts 1:1–11",
+      overview: "The resurrection is the most important event in all of human history. Without it, Jesus was just a tragic good man. With it, everything He said and did is vindicated. We'll examine the evidence, meet the risen Christ through the eyes of His disciples, and receive the Great Commission — the command that drives the church to this very day.",
+      videos: [
+        { title: "Luke 10–24 Overview", url: "https://bibleproject.com/videos/luke-10-24/", desc: "Resurrection & commission — BibleProject" },
+        { title: "New Testament Overview", url: "https://bibleproject.com/videos/new-testament-overview/", desc: "The Great Commission in context" },
+      ],
+      days: [
+        { day: "Monday", title: "The Empty Tomb", focus: "Matthew 28:1–15; John 20:1–18 — The stone is rolled away. The tomb is empty. Angels announce: 'He is not here; He has risen.' Mary Magdalene, a woman with a broken past, is the first person to see the risen Jesus. In a world where women's testimony wasn't legally recognized, this detail screams historical truth — no one inventing a story would choose women as first witnesses. The evidence for a bodily resurrection is overwhelming." },
+        { day: "Tuesday", title: "Post-Resurrection Appearances", focus: "Luke 24:13–35 — Two disciples on the road to Emmaus don't recognize Jesus; their hearts burn as He explains the Scriptures. John 20:19–31 — Thomas: 'I won't believe unless I touch the wounds.' Jesus appears and offers His hands. Thomas's response is the climax of John's Gospel: 'My Lord and my God!' The greatest declaration of Christ's divinity in the entire New Testament, and Jesus accepts it without correction." },
+        { day: "Wednesday", title: "The Meaning of the Resurrection", focus: "1 Corinthians 15:14–22 — Paul stakes everything on it: 'If Christ has not been raised, your faith is futile and you are still in your sins.' But He IS raised. Jesus as the 'firstfruits' of resurrection means His rising is the guarantee and preview of our own future bodily resurrection. The resurrection changes everything: sin is forgiven, death is defeated, and history has a destination." },
+        { day: "Thursday", title: "Peter's Restoration", focus: "John 21 — Peter denied Jesus three times. Here, beside a charcoal fire (same as the night of the denial), Jesus asks three times: 'Do you love me?' Each question heals a layer of shame. Each answer earns a commission: 'Feed my sheep.' Jesus doesn't just forgive Peter — He fully restores him. The one who failed most publicly becomes the leader of the early church. This is what grace does." },
+        { day: "Friday", title: "The Great Commission & Ascension", focus: "Matthew 28:18–20 — The foundation is Jesus's authority: 'All authority in heaven and on earth has been given to me. THEREFORE go...' The mission is global: all nations, all peoples. The method: make disciples, baptize, teach. The promise: 'I am with you always, to the end of the age.' Acts 1 — Jesus ascends, and the angels promise: 'This same Jesus will come back in the same way you have seen him go.' History is moving toward His return." },
+      ],
+      quiz: [
+        { q: "1 Corinthians 15:17: 'If Christ has not been raised, you are still in ___.'", options: ["darkness", "the Law", "your sins", "the world"], correct: 2 },
+        { q: "Who was the FIRST person to see the risen Jesus?", options: ["Peter", "Mary Magdalene", "John", "The disciples on the road to Emmaus"], correct: 1 },
+        { q: "Thomas's declaration 'My Lord and my God!' is significant because:", options: ["It was the first time a disciple said 'God' to Jesus", "It is the most direct statement of Jesus's divinity from a disciple — and Jesus accepted it", "It fulfilled the prophecy of Isaiah 9:6", "It convinced the other disciples to believe"], correct: 1 },
+        { q: "Jesus is the 'firstfruits' of resurrection (1 Cor. 15:20). This means:", options: ["Jesus was the most important person ever", "His resurrection guarantees the future bodily resurrection of all who believe", "Jesus was the first human to ever die and rise", "It happened at the beginning of harvest season"], correct: 1 },
+        { q: "The Great Commission (Matthew 28:18–20) begins with:", options: ["'Go and preach the Gospel to every creature'", "'All authority in heaven and on earth has been given to me'", "'I am with you always, to the end of the age'", "'You will be my witnesses in Jerusalem'"], correct: 1 },
+        { q: "Jesus asked Peter three times 'Do you love me?' to:", options: ["Test if his repentance was genuine", "Fully restore Peter from his three denials and recommission him for ministry", "Give Peter a chance to publicly confess faith", "Teach the other disciples about forgiveness"], correct: 1 },
+        { q: "At the Ascension, the angels promised:", options: ["The Holy Spirit would arrive immediately", "'This same Jesus will come back in the same way you saw him go'", "'Go to Jerusalem and wait 40 days'", "'The Kingdom will be restored to Israel in your lifetime'"], correct: 1 },
+        { q: "The Great Commission's command to go to 'all nations' fulfills God's promise to Abraham in:", options: ["Exodus 20 — the Ten Commandments", "Genesis 12:3 — 'all nations on earth will be blessed through you'", "Isaiah 9:6 — 'unto us a Son is given'", "Psalm 22 — the suffering servant psalm"], correct: 1 },
+      ]
+    },
+  ]
+};
+
+// Conversation history per week
+const conversations = {};
+let currentWeek = null;
+let currentDay = 0;
+let currentMode = 'lesson'; // lesson | chat | quiz
+let quizAnswers = {};
+let isLoading = false;
+
+// ─── BUILD NAV ─────────────────────────────────────────────────────────────────
+function buildNav() {
+  const nav = document.getElementById('weekNav');
+  CURRICULUM.weeks.forEach(w => {
+    const btn = document.createElement('button');
+    btn.className = 'week-btn';
+    btn.dataset.week = w.num;
+    btn.innerHTML = `<span class="wk-num">W${w.num}</span><span>${w.title}</span>`;
+    btn.onclick = () => loadWeek(w.num);
+    nav.appendChild(btn);
+  });
+
+  // Mid-quarter button
+  const mid = document.createElement('div');
+  mid.className = 'week-section special-btn';
+  mid.innerHTML = `<button class="week-btn" data-week="mid" onclick="loadSpecial('mid')"><span class="wk-num">MID</span><span>Mid-Quarter Test</span></button>`;
+  nav.appendChild(mid);
+
+  const end = document.createElement('div');
+  end.className = 'week-section special-btn';
+  end.innerHTML = `<button class="week-btn" data-week="end" onclick="loadSpecial('end')"><span class="wk-num">END</span><span>End of Quarter Test</span></button>`;
+  nav.appendChild(end);
+}
+
+function setActiveNav(id) {
+  document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`[data-week="${id}"]`);
+  if (btn) btn.classList.add('active');
+}
+
+// ─── LOAD WEEK ─────────────────────────────────────────────────────────────────
+function loadWeek(num) {
+  currentWeek = CURRICULUM.weeks.find(w => w.num === num);
+  currentDay = 0;
+  currentMode = 'lesson';
+  if (!conversations[num]) {
+    conversations[num] = [];
+  }
+  setActiveNav(num);
+  renderMain();
+}
+
+function loadSpecial(type) {
+  currentWeek = null;
+  currentMode = type;
+  currentDay = 0;
+  setActiveNav(type);
+  renderSpecialTest(type);
+}
+
+// ─── RENDER MAIN ──────────────────────────────────────────────────────────────
+function renderMain() {
+  const main = document.getElementById('mainArea');
+
+  if (currentMode === 'lesson') {
+    renderLessonView(main);
+  } else if (currentMode === 'chat') {
+    renderChatView(main);
+  } else if (currentMode === 'quiz') {
+    renderQuizView(main);
+  }
+}
+
+function renderHeader() {
+  const w = currentWeek;
+  return `
+    <header class="main-header">
+      <div class="lesson-title-area">
+        <h1>Week ${w.num}: ${w.title}</h1>
+        <p>${w.theme}</p>
+      </div>
+      <div class="mode-tabs">
+        <button class="mode-tab ${currentMode==='lesson'?'active':''}" onclick="switchMode('lesson')">LESSON</button>
+        <button class="mode-tab ${currentMode==='chat'?'active':''}" onclick="switchMode('chat')">ASK ME</button>
+        <button class="mode-tab ${currentMode==='quiz'?'active':''}" onclick="switchMode('quiz')">QUIZ</button>
+      </div>
+    </header>
+  `;
+}
+
+function switchMode(mode) {
+  currentMode = mode;
+  renderMain();
+}
+
+// ─── LESSON VIEW ──────────────────────────────────────────────────────────────
+function renderLessonView(main) {
+  const w = currentWeek;
+  const d = w.days[currentDay];
+
+  const dayTabs = w.days.map((day, i) => `
+    <button class="day-tab ${i===currentDay?'active':''}" onclick="selectDay(${i})">${day.day}</button>
+  `).join('');
+
+  const videoCards = w.videos.map(v => `
+    <a href="${v.url}" target="_blank" class="video-card">
+      <div class="video-icon">▶</div>
+      <div class="video-info">
+        <div class="v-title">${v.title}</div>
+        <div class="v-sub">${v.desc}</div>
+      </div>
+    </a>
+  `).join('');
+
+  main.innerHTML = `
+    ${renderHeader()}
+    <div class="content-area">
+      <div class="lesson-view">
+        <div class="lesson-hero">
+          <div class="week-label">WEEK ${w.num}</div>
+          <h2>${w.title}</h2>
+          <div class="theme">${w.theme}</div>
+          <span class="scripture-pill">📖 ${w.scripture}</span>
+        </div>
+
+        <div class="teaching-card">
+          <div class="teaching-card-header">
+            <span class="icon">📚</span>
+            <h3>Week Overview</h3>
+          </div>
+          <div class="teaching-card-body">${w.overview}</div>
+        </div>
+
+        <div class="teaching-card">
+          <div class="teaching-card-header">
+            <span class="icon">🎬</span>
+            <h3>The Bible Project — Visual Aids</h3>
+          </div>
+          <div class="teaching-card-body">
+            <p style="margin-bottom:14px;color:rgba(245,237,214,0.55);font-size:13px;font-style:italic;">Watch these videos to see the big picture before diving into the daily lessons:</p>
+            <div class="video-grid">${videoCards}</div>
+          </div>
+        </div>
+
+        <h3 style="font-family:'Playfair Display',serif;color:var(--parchment);font-size:20px;margin:28px 0 16px;">Daily Lessons</h3>
+
+        <div class="day-tabs">${dayTabs}</div>
+
+        ${(()=>{
+          const key = w.num+'-'+currentDay;
+          const instr = STUDENT_INSTRUCTIONS[key];
+          const hilts = TEST_HIGHLIGHTS[key];
+          let instrHtml = '';
+          if(instr){
+            const steps = instr.steps.map((s,i)=>`<div class="si-step"><div class="si-step-num">${i+1}</div><div>${s}</div></div>`).join('');
+            instrHtml = `<div class="student-instructions">
+              <div class="si-header">
+                <span class="si-badge">YOUR ASSIGNMENT TODAY</span>
+                <span class="si-title">${d.day} — ${d.title}</span>
+              </div>
+              <div class="si-steps">
+                <div class="si-step"><div class="si-step-num" style="background:rgba(100,160,220,0.2);border-color:rgba(100,160,220,0.4);color:#6aaad4;">📖</div><div><strong style="color:rgba(245,237,214,0.8);">Read today:</strong> <em style="color:var(--gold)">${instr.scripture}</em></div></div>
+                ${steps}
+              </div>
+            </div>`;
+          }
+          let hiltHtml = '';
+          if(hilts){
+            const items = hilts.map(h=>`<div class="th-item"><span class="th-star">★</span><span>${h}</span></div>`).join('');
+            hiltHtml = `<div class="test-highlights">
+              <div class="th-header">⚡ KNOW THIS FOR THE TEST</div>
+              <div class="th-items">${items}</div>
+            </div>`;
+          }
+          return instrHtml;
+        })()}
+
+        <div class="teaching-card">
+          <div class="teaching-card-header">
+            <span class="icon">✦</span>
+            <h3>${d.day}: ${d.title}</h3>
+          </div>
+          <div class="teaching-card-body" style="font-size:16px;line-height:1.85;">${d.focus}</div>
+        </div>
+
+        ${(()=>{
+          const key = w.num+'-'+currentDay;
+          const hilts = TEST_HIGHLIGHTS[key];
+          if(!hilts) return '';
+          const items = hilts.map(h=>`<div class="th-item"><span class="th-star">★</span><span>${h}</span></div>`).join('');
+          return `<div class="test-highlights">
+            <div class="th-header">⚡ KNOW THIS FOR THE TEST</div>
+            <div class="th-items">${items}</div>
+          </div>`;
+        })()}
+
+      </div>
+    </div>
+  `;
+}
+
+function selectDay(i) {
+  currentDay = i;
+  renderLessonView(document.getElementById('mainArea'));
+}
+
+// ─── CHAT VIEW ────────────────────────────────────────────────────────────────
+function renderChatView(main) {
+  const w = currentWeek;
+  const msgs = conversations[w.num] || [];
+  const d = w.days[currentDay];
+
+  const quickPrompts = [
+    `Explain today's lesson to me`,
+    `Ask me a question about ${d.title}`,
+    `Why does this matter for my faith?`,
+    `What does this reveal about God?`,
+    `Give me a quiz question`,
+  ];
+
+  const msgsHtml = msgs.length === 0 ? `
+    <div style="text-align:center;padding:48px 24px;">
+      <div style="font-size:36px;margin-bottom:16px;filter:drop-shadow(0 0 12px rgba(212,160,23,0.4));">✝</div>
+      <p style="font-family:'Playfair Display',serif;color:var(--parchment);font-size:20px;margin-bottom:10px;">Hello, student. I'm your teacher.</p>
+      <p style="color:rgba(245,237,214,0.45);font-size:14px;line-height:1.7;max-width:420px;margin:0 auto;">Ask me anything about the Gospels. I can explain the lesson, ask you questions to check your understanding, explore theology with you, or help you connect what we're learning to your own life.</p>
+    </div>
+  ` : msgs.map(m => renderMessage(m)).join('');
+
+  main.innerHTML = `
+    ${renderHeader()}
+    <div class="chat-wrapper">
+      <div class="chat-context-bar">
+        <span class="ctx-label">CONTEXT</span>
+        <span class="ctx-pill">Week ${w.num}: ${w.title}</span>
+        <span class="ctx-pill">${d.day}: ${d.title}</span>
+      </div>
+      <div class="messages-area" id="messagesArea">${msgsHtml}</div>
+      <div class="input-area">
+        <div class="quick-prompts">
+          ${quickPrompts.map(p => `<button class="quick-btn" onclick="sendQuick('${p.replace(/'/g,"\\'")}')">✦ ${p}</button>`).join('')}
+        </div>
+        <div class="input-row">
+          <textarea class="chat-input" id="chatInput" placeholder="Ask your teacher anything about the Gospels..." rows="1"
+            onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  scrollToBottom();
+}
+
+function renderMessage(m) {
+  const isTeacher = m.role === 'assistant';
+  return `
+    <div class="msg ${isTeacher ? 'teacher' : 'user'}">
+      <div class="msg-avatar ${isTeacher ? 'teacher' : 'student'}">${isTeacher ? '✝' : '📖'}</div>
+      <div>
+        <div class="msg-name">${isTeacher ? 'YOUR TEACHER' : 'YOU'}</div>
+        <div class="msg-bubble">${formatMessage(m.content)}</div>
+      </div>
+    </div>
+  `;
+}
+
+function formatMessage(text) {
+  // Bold
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // Italic
+  text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  // Scripture quotes (lines starting with >)
+  text = text.replace(/^> (.+)$/gm, (_, content) => {
+    const parts = content.split(' — ');
+    return `<div class="scripture-quote">${parts[0]}${parts[1] ? `<cite>— ${parts[1]}</cite>` : ''}</div>`;
+  });
+  // Line breaks
+  text = text.replace(/\n\n/g, '</p><p style="margin-top:10px;">');
+  text = text.replace(/\n/g, '<br>');
+  return `<p>${text}</p>`;
+}
+
+function scrollToBottom() {
+  setTimeout(() => {
+    const area = document.getElementById('messagesArea');
+    if (area) area.scrollTop = area.scrollHeight;
+  }, 50);
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+function sendQuick(text) {
+  const input = document.getElementById('chatInput');
+  if (input) {
+    input.value = text;
+    sendMessage();
+  }
+}
+
+async function sendMessage() {
+  if (isLoading) return;
+  const input = document.getElementById('chatInput');
+  const text = input ? input.value.trim() : '';
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+
+  const w = currentWeek;
+  const d = w.days[currentDay];
+
+  conversations[w.num].push({ role: 'user', content: text });
+
+  // Re-render with user message + typing indicator
+  renderChatViewMessages();
+  const area = document.getElementById('messagesArea');
+  area.innerHTML += `
+    <div class="msg teacher" id="typingMsg">
+      <div class="msg-avatar teacher">✝</div>
+      <div>
+        <div class="msg-name">YOUR TEACHER</div>
+        <div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>
+      </div>
+    </div>
+  `;
+  scrollToBottom();
+  isLoading = true;
+  document.getElementById('sendBtn').disabled = true;
+
+  const systemPrompt = `You are an enthusiastic, wise, and warm Evangelical Christian teacher leading a 7th grade student through a 9-week study of the four Gospels. 
+
+Your core commitments:
+- Scripture is inspired and inerrant (2 Tim. 3:16)
+- Jesus is fully God and fully man (the Hypostatic Union)  
+- Salvation is by grace through faith alone in Christ alone
+- You teach from an Evangelical framework with warmth and clarity
+
+Current context:
+- Week ${w.num}: "${w.title}" 
+- Today's focus: "${d.day}: ${d.title}"
+- Today's content: "${d.focus}"
+- Key scriptures: ${w.scripture}
+- Week overview: ${w.overview}
+
+Teaching style:
+- Speak directly to the student as their teacher — warm, personal, engaging
+- Use vivid illustrations, real-world connections, and occasional humor appropriate for a 7th grader
+- Regularly cite specific Scripture (book, chapter, verse)
+- When relevant, use > blockquote format for scripture: > "verse text" — Reference
+- Use **bold** for emphasis on key theological terms and important truths
+- Draw out the **divinity of Christ** and the **character of God** in everything
+- When a student answers a question, affirm what's right, gently correct what's wrong, and always build deeper understanding
+- Keep responses focused and conversational — not too long, but substantive
+- Occasionally ask the student a follow-up question to keep them thinking
+- Always point everything back to Jesus and what it means for the student personally`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: conversations[w.num],
+      })
+    });
+
+    const data = await response.json();
+    const reply = data.content?.map(c => c.text || '').join('') || "I'm sorry, I couldn't respond right now. Please try again.";
+
+    conversations[w.num].push({ role: 'assistant', content: reply });
+  } catch (err) {
+    conversations[w.num].push({ role: 'assistant', content: "I'm having trouble connecting right now. Please check your connection and try again." });
+  }
+
+  isLoading = false;
+  renderChatViewMessages();
+  document.getElementById('sendBtn').disabled = false;
+  scrollToBottom();
+}
+
+function renderChatViewMessages() {
+  const area = document.getElementById('messagesArea');
+  if (!area) return;
+  const msgs = conversations[currentWeek.num] || [];
+  if (msgs.length === 0) return;
+  area.innerHTML = msgs.map(m => renderMessage(m)).join('');
+}
+
+// ─── QUIZ VIEW ────────────────────────────────────────────────────────────────
+function renderQuizView(main) {
+  const w = currentWeek;
+  const answered = quizAnswers[w.num] || {};
+  const numAnswered = Object.keys(answered).length;
+  const numCorrect = Object.values(answered).filter(a => a.correct).length;
+
+  main.innerHTML = `
+    ${renderHeader()}
+    <div class="content-area">
+      <div class="quiz-view">
+        <div class="quiz-header">
+          <h2>Week ${w.num} Quiz</h2>
+          <p>${w.title}</p>
+        </div>
+
+        ${numAnswered > 0 ? `
+        <div class="quiz-score-bar">
+          <div class="score-circle">${numCorrect}/${numAnswered}</div>
+          <div class="score-text">
+            <h3>${numAnswered < w.quiz.length ? `${w.quiz.length - numAnswered} questions remaining` : 'Quiz Complete!'}</h3>
+            <p>${numCorrect} correct out of ${numAnswered} answered${numAnswered === w.quiz.length ? ` — ${Math.round(numCorrect/w.quiz.length*100)}%` : ''}</p>
+          </div>
+          ${numAnswered === w.quiz.length ? `<button onclick="resetQuiz()" style="margin-left:auto;background:none;border:1px solid rgba(184,134,11,0.3);color:var(--gold);padding:8px 16px;border-radius:6px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;">RETAKE</button>` : ''}
+        </div>
+        ` : ''}
+
+        ${w.quiz.map((q, qi) => renderQuizQuestion(q, qi, answered[qi])).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderQuizQuestion(q, qi, userAnswer) {
+  const letters = ['A', 'B', 'C', 'D'];
+  const isAnswered = userAnswer !== undefined;
+
+  const optionsHtml = q.options.map((opt, oi) => {
+    let cls = 'quiz-option';
+    if (isAnswered) {
+      if (oi === q.correct) cls += userAnswer.chosen === oi ? ' correct' : ' reveal-correct';
+      else if (oi === userAnswer.chosen && oi !== q.correct) cls += ' wrong';
+    }
+    return `
+      <button class="${cls}" ${isAnswered ? 'disabled' : ''} onclick="answerQuiz(${qi}, ${oi})">
+        <span class="option-letter">${letters[oi]}</span>
+        ${opt}
+      </button>
+    `;
+  }).join('');
+
+  let feedback = '';
+  if (isAnswered) {
+    if (userAnswer.correct) {
+      feedback = `<div class="quiz-feedback correct-fb">✓ Correct! ${q.options[q.correct]}</div>`;
+    } else {
+      feedback = `<div class="quiz-feedback wrong-fb">✗ The correct answer is: <strong>${q.options[q.correct]}</strong></div>`;
+    }
+  }
+
+  const cardCls = isAnswered ? (userAnswer.correct ? 'quiz-card answered-correct' : 'quiz-card answered-wrong') : 'quiz-card';
+
+  return `
+    <div class="${cardCls}">
+      <div class="quiz-q-num">QUESTION ${qi + 1} OF ${currentWeek.quiz.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-options">${optionsHtml}</div>
+      ${feedback}
+    </div>
+  `;
+}
+
+function answerQuiz(qi, chosen) {
+  const w = currentWeek;
+  if (!quizAnswers[w.num]) quizAnswers[w.num] = {};
+  quizAnswers[w.num][qi] = {
+    chosen,
+    correct: chosen === w.quiz[qi].correct
+  };
+  renderQuizView(document.getElementById('mainArea'));
+  // Scroll to the question
+  setTimeout(() => {
+    const cards = document.querySelectorAll('.quiz-card');
+    if (cards[qi]) cards[qi].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+
+function resetQuiz() {
+  const w = currentWeek;
+  quizAnswers[w.num] = {};
+  renderQuizView(document.getElementById('mainArea'));
+}
+
+// ─── SPECIAL TESTS ────────────────────────────────────────────────────────────
+function renderSpecialTest(type) {
+  const isMid = type === 'mid';
+  const title = isMid ? 'Mid-Quarter Test' : 'End of Quarter Test';
+  const subtitle = isMid ? 'Weeks 1–5 · 40 Questions' : 'Weeks 1–9 · 50 Questions';
+
+  const main = document.getElementById('mainArea');
+  main.innerHTML = `
+    <header class="main-header">
+      <div class="lesson-title-area">
+        <h1>${title}</h1>
+        <p>${subtitle}</p>
+      </div>
+    </header>
+    <div class="content-area">
+      <div class="quiz-view">
+        <div class="quiz-header">
+          <h2>${title}</h2>
+          <p style="margin-top:8px;font-size:15px;color:rgba(245,237,214,0.5);">Switch to the <strong style="color:var(--gold)">ASK ME</strong> tab in any week to ask me to give you a verbal review before taking this test!</p>
+        </div>
+        <div style="background:rgba(26,46,74,0.5);border:1px solid rgba(184,134,11,0.25);border-radius:10px;padding:24px;text-align:center;">
+          <div style="font-size:40px;margin-bottom:16px;">📝</div>
+          <p style="font-family:'Playfair Display',serif;color:var(--parchment);font-size:20px;margin-bottom:12px;">${title}</p>
+          <p style="color:rgba(245,237,214,0.55);font-size:15px;line-height:1.7;max-width:440px;margin:0 auto 20px;">
+            ${isMid
+              ? "This test covers all material from Weeks 1–5. Before you begin, I recommend switching to the 'Ask Me' tab in each week and asking me to review the key concepts with you."
+              : "This comprehensive test covers all 9 weeks of study. It's the culmination of everything we've learned about Jesus — His identity, His teachings, His death, and His resurrection."
+            }
+          </p>
+          <button class="start-btn" onclick="startSpecialTest('${type}')">BEGIN TEST →</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+const midTestQuestions = [
+  { q: "What does the word 'Gospel' mean?", options: ["Law of God", "Good News", "Holy Scripture", "The New Testament"], correct: 1 },
+  { q: "Which Gospel was written primarily for a Jewish audience?", options: ["Mark", "Luke", "John", "Matthew"], correct: 3 },
+  { q: "John 1:1 says 'In the beginning was the Word, and the Word was ___.'", options: ["holy", "with God only", "God", "eternal"], correct: 2 },
+  { q: "Which Gospel author was a physician?", options: ["Matthew", "Mark", "Luke", "John"], correct: 2 },
+  { q: "John 20:30–31 states John wrote his Gospel so readers would:", options: ["Understand all of Jesus's teachings", "Believe Jesus is the Son of God and have life in His name", "Learn how to be disciples", "Understand Jewish prophecy"], correct: 1 },
+  { q: "The term for Scripture being 'breathed out by God' (2 Tim. 3:16) is:", options: ["Illumination", "Canonization", "Inspiration", "Revelation"], correct: 2 },
+  { q: "'Immanuel' means:", options: ["God saves", "God with us", "God is great", "Prince of Peace"], correct: 1 },
+  { q: "Jesus was born in which city, fulfilling Micah 5:2?", options: ["Jerusalem", "Nazareth", "Bethlehem", "Jericho"], correct: 2 },
+  { q: "John 1:14 says 'The Word became ___.'", options: ["spirit", "light", "flesh", "king"], correct: 2 },
+  { q: "The theological term for God becoming human in Jesus is:", options: ["Atonement", "Incarnation", "Sanctification", "Transfiguration"], correct: 1 },
+  { q: "Jesus's first recorded words were:", options: ["Follow me.", "I am the Way.", "Did you not know I must be in my Father's house?", "The Kingdom is at hand."], correct: 2 },
+  { q: "The kenosis (Phil. 2:6–8) refers to Jesus:", options: ["Becoming fully divine at baptism", "Voluntarily emptying Himself of divine privileges to become human", "Learning that He was the Son of God", "Receiving the Holy Spirit for the first time"], correct: 1 },
+  { q: "All three persons of the Trinity appeared at Jesus's:", options: ["Transfiguration", "Baptism", "Temptation", "Resurrection"], correct: 1 },
+  { q: "Jesus used which strategy against each of Satan's three temptations?", options: ["Silence and prayer", "Quoting Scripture", "Commanding Satan's departure", "Calling on the Father"], correct: 1 },
+  { q: "Jesus is called the 'last Adam' because He:", options: ["Was the final human born", "Succeeded where Adam failed — obeying where Adam disobeyed", "Was Adam's last living descendant", "Lived for hundreds of years"], correct: 1 },
+  { q: "Jesus's first public message (Mark 1:15) was:", options: ["Blessed are the poor in spirit", "Repent and believe in the Gospel", "Love God and love your neighbor", "The Spirit of the Lord is upon me"], correct: 1 },
+  { q: "The Beatitudes are found in which famous sermon?", options: ["The Olivet Discourse", "The Upper Room Discourse", "The Sermon on the Mount", "The Bread of Life Discourse"], correct: 2 },
+  { q: "'Blessed are the poor in spirit' means:", options: ["Blessed are the financially poor", "Blessed are those who recognize their spiritual need before God", "Blessed are those who are sad", "Blessed are those who give to the poor"], correct: 1 },
+  { q: "In the Lord's Prayer, what comes BEFORE personal requests?", options: ["Forgiveness", "Daily bread", "God's name, Kingdom, and will", "Deliverance from evil"], correct: 2 },
+  { q: "In Luke 15, the three 'lost and found' parables share the theme of:", options: ["God's judgment on sin", "Something lost being found with great joy", "The need for repentance before baptism", "Faith vs. works"], correct: 1 },
+  { q: "The father in the Prodigal Son ran to his returning child. This reveals:", options: ["God is patient but remains at a distance", "God enthusiastically pursues the repentant with overwhelming love", "God waits for perfect repentance before forgiving", "God is mainly concerned with justice"], correct: 1 },
+  { q: "In the Parable of the Sower, the four soils represent:", options: ["Four types of preachers", "Four stages of growth", "Four types of hearts responding to God's Word", "Four historical periods"], correct: 2 },
+  { q: "John calls Jesus's miracles 'signs.' They primarily:", options: ["Attract large crowds", "Reveal Jesus's divine identity and produce faith", "Fulfill specific prophecies only", "Show superiority over Moses"], correct: 1 },
+  { q: "Jesus's first miracle took place at:", options: ["A synagogue in Capernaum", "A wedding in Cana of Galilee", "The Temple in Jerusalem", "Peter's house"], correct: 1 },
+  { q: "When Jesus calmed the storm, His disciples asked:", options: ["Lord, save us!", "Why did you let the storm come?", "Who is this man that even the wind and sea obey Him?", "Increase our faith"], correct: 2 },
+  { q: "When Jesus walked on water and said 'I AM' (ego eimi), He was using:", options: ["A common greeting", "God's divine name from Exodus 3:14", "A title meaning Son of David", "A way to identify Himself"], correct: 1 },
+  { q: "Jesus wept at Lazarus's tomb even knowing He would raise him because:", options: ["He doubted for a moment", "He was moved by genuine compassion for grieving people", "It was part of the miracle performance", "He was afraid of the religious leaders"], correct: 1 },
+  { q: "Jesus declared before raising Lazarus:", options: ["'For God so loved the world...'", "'I am the Way, Truth, and Life'", "'I am the Resurrection and the Life'", "'Come to me, all you who are weary'"], correct: 2 },
+  { q: "The woman healed of 12 years of bleeding was healed by:", options: ["A long prayer vigil", "The disciples' intercession", "Touching Jesus's garment in faith", "An angel's announcement"], correct: 2 },
+  { q: "Peter sank while walking on water because:", options: ["His faith wasn't genuine", "He looked at the storm instead of Jesus", "Jesus withdrew His power", "He hadn't been baptized"], correct: 1 },
+  { q: "2 Timothy 3:16 says all Scripture is:", options: ["Written by apostles only", "Breathed out by God (inspired)", "Subject to human interpretation only", "Only the words of Jesus"], correct: 1 },
+  { q: "Luke 2:52 says Jesus 'grew in wisdom and stature.' This confirms His:", options: ["Divinity only", "True humanity — He experienced genuine human development", "Ignorance of spiritual matters", "Equality with angels"], correct: 1 },
+  { q: "Jesus said Christians are 'salt' and 'light' to teach them to:", options: ["Avoid all worldly contact", "Actively influence and illuminate the world around them", "Separate from all non-Christians", "Focus only on personal holiness"], correct: 1 },
+  { q: "Jesus came to 'fulfill' the Law (Matt. 5:17) meaning:", options: ["He removed the Law entirely", "He brought the Law to its complete purpose through perfect obedience and His death", "He made the Law stricter", "He replaced the Law with the Ten Commandments"], correct: 1 },
+  { q: "The 'Kingdom of God' primarily refers to:", options: ["A future political government", "God's sovereign rule, first in believers' hearts", "The nation of Israel under the Law", "Heaven as a physical place"], correct: 1 },
+  { q: "Mark's fast-paced writing style is reflected in his use of the word:", options: ["Boldly", "Immediately", "Graciously", "Therefore"], correct: 1 },
+  { q: "John's stated purpose (John 20:30–31) is that readers would:", options: ["Understand all Jesus's teachings", "Believe Jesus is the Christ and have life in His name", "Know how to be good disciples", "Understand Jewish prophecy"], correct: 1 },
+  { q: "The 'hired hand' in John 10 contrasts with the Good Shepherd because:", options: ["He is paid more than the shepherd", "He flees when danger comes — he has no real stake in the sheep", "He doesn't know the sheep's names", "He reports to the Pharisees"], correct: 1 },
+  { q: "Jesus's anger in the Temple was 'righteous' because it:", options: ["Showed He could overpower anyone", "Was directed at genuine evil — exploitation and blocking Gentile access to prayer", "Was provoked by personal insult", "Was predicted in a prophecy"], correct: 1 },
+  { q: "In Gethsemane, the 'cup' Jesus asked the Father to remove was:", options: ["Physical pain and crucifixion", "God's wrath against sin that He was about to bear", "Judas's betrayal", "The disciples abandoning Him"], correct: 1 },
+];
+
+const endTestQuestions = [
+  ...midTestQuestions.slice(0, 25),
+  { q: "How many 'I AM' statements does Jesus make in John's Gospel?", options: ["Four", "Five", "Six", "Seven"], correct: 3 },
+  { q: "'I am the Bread of Life' means Jesus:", options: ["Always provides physical food", "Is the eternal source of spiritual satisfaction and life", "Was literally the manna in the wilderness", "Only feeds those who obey the Law"], correct: 1 },
+  { q: "John 14:6 — Jesus's claim 'No one comes to the Father except through me' means:", options: ["Jesus is the best path among many", "Jesus is the only path — salvation is exclusive", "Jesus is the greatest teacher of God's law", "Jesus will personally escort believers at death"], correct: 1 },
+  { q: "'I am the True Vine' (John 15:1) refers to Israel's failure as God's:", options: ["shepherd flock", "vine (Isaiah 5; Psalm 80)", "chosen kingdom", "holy mountain"], correct: 1 },
+  { q: "To 'abide' in Jesus (John 15) means:", options: ["Attending church regularly", "Remaining in constant, dependent connection to Jesus as the source of life", "Following all commands perfectly", "Memorizing large Scripture portions"], correct: 1 },
+  { q: "At the Transfiguration, who appeared with Jesus?", options: ["Abraham and Isaac", "Moses and Elijah", "David and Solomon", "Peter and Paul"], correct: 1 },
+  { q: "The Father's command at the Transfiguration was:", options: ["'Go make disciples'", "'This is my beloved Son; listen to Him!'", "'The Kingdom of God is at hand'", "'All authority is given to Him'"], correct: 1 },
+  { q: "Luke 9:51 says Jesus 'resolutely set his face toward Jerusalem' knowing He would:", options: ["Establish an earthly kingdom", "Be arrested, tried, and crucified", "Call 72 more disciples", "Debate the Pharisees"], correct: 1 },
+  { q: "Mark 10:45 — 'The Son of Man came not to be served but to serve and give His life as a ___ for many.'", options: ["example", "lesson", "ransom", "sacrifice"], correct: 2 },
+  { q: "At the Last Supper, the cup represented:", options: ["The blessing of Abraham", "Jesus's blood of the New Covenant", "The Old Covenant Passover lamb", "The coming Holy Spirit"], correct: 1 },
+  { q: "Isaiah 53 was written approximately ___ before Jesus's crucifixion:", options: ["300 years", "500 years", "700 years", "1,000 years"], correct: 2 },
+  { q: "The Temple curtain tearing at Jesus's death symbolized:", options: ["The Temple's coming destruction", "Permanent open access to God for all believers through Jesus", "The end of all Jewish worship", "The Temple being cursed"], correct: 1 },
+  { q: "'It is finished' (tetelestai) means:", options: ["His earthly life is over", "The debt of sin is completely paid in full", "The Old Covenant has ended", "His suffering stopped"], correct: 1 },
+  { q: "Substitutionary atonement means:", options: ["Jesus replaced one religion with another", "Jesus took our place, bearing our punishment from a just God", "Jesus atoned through His perfect life only", "Jesus substituted grace for the Law"], correct: 1 },
+  { q: "Jesus's FIRST words from the cross were:", options: ["'It is finished'", "'Today you will be with me in paradise'", "'Father, forgive them, they know not what they do'", "'My God, why have you forsaken me?'"], correct: 2 },
+  { q: "The bodily resurrection proves:", options: ["God can perform miracles", "Jesus's claims are vindicated, the atonement accepted, and our resurrection guaranteed", "The Roman occupation ended", "Only the Psalm 22 prophecy was fulfilled"], correct: 1 },
+  { q: "Jesus is the 'firstfruits' of resurrection meaning:", options: ["Jesus was the most important person ever", "His resurrection guarantees the future bodily resurrection of all who believe", "Jesus was the first human to die and rise", "It happened at harvest season"], correct: 1 },
+  { q: "Thomas's 'My Lord and my God!' is significant because:", options: ["It was the first time a disciple said 'God' for Jesus", "It is the most direct statement of Jesus's divinity by a disciple — and Jesus accepted it", "It fulfilled Isaiah 9:6", "It convinced the other disciples"], correct: 1 },
+  { q: "The Great Commission (Matt. 28:18–20) begins with:", options: ["'Go preach the Gospel'", "'All authority in heaven and on earth has been given to me'", "'I am with you always'", "'You will be my witnesses'"], correct: 1 },
+  { q: "God's promise to Abraham ('all nations blessed') is fulfilled through:", options: ["Israel conquering Canaan", "Solomon's temple", "Jesus's death and resurrection offered to all nations", "The Law at Sinai"], correct: 2 },
+  { q: "C.S. Lewis's trilemma concludes Jesus cannot simply be:", options: ["A divine being", "The Messiah of Israel", "Just a good moral teacher", "A historical figure"], correct: 2 },
+  { q: "Jesus restored Peter after his three denials by:", options: ["Publicly rebuking him", "Asking 'Do you love me?' three times and recommissioning him for ministry", "Sending him on a mission trip", "Having him baptize 3,000 people"], correct: 1 },
+  { q: "At the Ascension, the angels promised:", options: ["The Holy Spirit would arrive immediately", "'This same Jesus will come back the same way you saw him go'", "'Go wait in Jerusalem 40 days'", "'The Kingdom will be restored in your lifetime'"], correct: 1 },
+  { q: "1 Cor. 15:17 — 'If Christ has not been raised, you are still in ___.'", options: ["darkness", "the Law", "your sins", "the world"], correct: 2 },
+  { q: "Which statement BEST summarizes the message of the Gospels?", options: ["Jesus was the greatest moral teacher", "Jesus is the eternal Son of God who became flesh, died for our sins, rose from the dead, and calls all to believe and follow Him", "Jesus's teachings provide the best ethical framework for civilization", "God loves all people and will ultimately save everyone"], correct: 1 },
+];
+
+let specialTestAnswers = { mid: {}, end: {} };
+
+function startSpecialTest(type) {
+  const questions = type === 'mid' ? midTestQuestions : endTestQuestions;
+  const title = type === 'mid' ? 'Mid-Quarter Test' : 'End of Quarter Test';
+  const subtitle = type === 'mid' ? 'Weeks 1–5 · 40 Questions' : 'Weeks 1–9 · 50 Questions';
+  const main = document.getElementById('mainArea');
+  const answered = specialTestAnswers[type] || {};
+  const numAnswered = Object.keys(answered).length;
+  const numCorrect = Object.values(answered).filter(a => a.correct).length;
+
+  const questionsHtml = questions.map((q, qi) => {
+    const userAnswer = answered[qi];
+    const isAnswered = userAnswer !== undefined;
+    const letters = ['A','B','C','D'];
+    const opts = q.options.map((opt, oi) => {
+      let cls = 'quiz-option';
+      if (isAnswered) {
+        if (oi === q.correct) cls += userAnswer.chosen === oi ? ' correct' : ' reveal-correct';
+        else if (oi === userAnswer.chosen && oi !== q.correct) cls += ' wrong';
+      }
+      return `<button class="${cls}" ${isAnswered?'disabled':''} onclick="answerSpecial('${type}',${qi},${oi},${questions.length})">
+        <span class="option-letter">${letters[oi]}</span>${opt}
+      </button>`;
+    }).join('');
+    let fb = '';
+    if (isAnswered) {
+      fb = userAnswer.correct
+        ? `<div class="quiz-feedback correct-fb">✓ Correct!</div>`
+        : `<div class="quiz-feedback wrong-fb">✗ Correct answer: <strong>${q.options[q.correct]}</strong></div>`;
+    }
+    const cardCls = isAnswered ? (userAnswer.correct ? 'quiz-card answered-correct' : 'quiz-card answered-wrong') : 'quiz-card';
+    return `<div class="${cardCls}" id="sq-${qi}">
+      <div class="quiz-q-num">QUESTION ${qi+1} OF ${questions.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-options">${opts}</div>${fb}
+    </div>`;
+  }).join('');
+
+  main.innerHTML = `
+    <header class="main-header">
+      <div class="lesson-title-area"><h1>${title}</h1><p>${subtitle}</p></div>
+      ${numAnswered === questions.length ? `<button onclick="resetSpecial('${type}')" style="background:none;border:1px solid rgba(184,134,11,0.3);color:var(--gold);padding:8px 16px;border-radius:6px;cursor:pointer;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;">RETAKE TEST</button>` : ''}
+    </header>
+    <div class="content-area">
+      <div class="quiz-view">
+        <div class="quiz-header">
+          <h2>${title}</h2>
+          <p>${subtitle}</p>
+        </div>
+        ${numAnswered > 0 ? `
+        <div class="quiz-score-bar">
+          <div class="score-circle">${numCorrect}/${numAnswered}</div>
+          <div class="score-text">
+            <h3>${numAnswered < questions.length ? `${questions.length - numAnswered} questions remaining` : 'Test Complete!'}</h3>
+            <p>${numCorrect} correct of ${numAnswered}${numAnswered===questions.length?` — ${Math.round(numCorrect/questions.length*100)}%`:''}</p>
+          </div>
+        </div>` : ''}
+        ${questionsHtml}
+      </div>
+    </div>
+  `;
+}
+
+function answerSpecial(type, qi, chosen, total) {
+  const questions = type === 'mid' ? midTestQuestions : endTestQuestions;
+  if (!specialTestAnswers[type]) specialTestAnswers[type] = {};
+  specialTestAnswers[type][qi] = { chosen, correct: chosen === questions[qi].correct };
+  startSpecialTest(type);
+  setTimeout(() => {
+    const el = document.getElementById(`sq-${qi}`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+
+function resetSpecial(type) {
+  specialTestAnswers[type] = {};
+  startSpecialTest(type);
+}
+
+
+// ── TEST HIGHLIGHTS per week/day ──────────────────────────────────────────────
+const TEST_HIGHLIGHTS = {
+  "1-0": ["What does 'Gospel' (euangelion) mean — and who wrote each Gospel?", "John's stated purpose: John 20:30–31 — know this verse cold.", "Key term: <strong>Inspiration</strong> — 2 Tim. 3:16, Scripture is 'God-breathed.'"],
+  "1-1": ["Matthew wrote for <strong>Jews</strong>, showing Jesus as <strong>Messiah-King</strong>.", "Mark's key word: <strong>'Immediately'</strong> — fast-paced Gospel for Romans.", "Know which Gospel author had which background."],
+  "1-2": ["Luke was a <strong>physician</strong> — most historically detailed Gospel.", "John 1:1 — '<strong>In the beginning was the Word, and the Word was God.</strong>'", "Key term: The 'Word' (Greek: <strong>Logos</strong>) = Jesus."],
+  "1-3": ["The religious groups: <strong>Pharisees</strong> (strict law), <strong>Sadducees</strong> (aristocrats), <strong>Scribes</strong> (law teachers).", "Galatians 4:4 — Jesus came '<strong>in the fullness of time</strong>' — God's sovereignty.", "Israel was under <strong>Roman occupation</strong> and longed for the Messiah."],
+  "1-4": ["John 1:1 — '<strong>The Word was God</strong>' — Jesus is eternal and divine.", "Matthew opens with a <strong>genealogy</strong>; Mark with <strong>action</strong>; Luke with <strong>research</strong>; John with <strong>eternity</strong>.", "Know the distinct opening of each Gospel and what it emphasizes."],
+  "2-0": ["Key verse: Luke 1:38 — Mary's response of <strong>faith and obedience</strong>.", "The virgin birth ensures Jesus was born <strong>without a sin nature</strong> — essential for being our perfect sacrifice.", "Key term: <strong>Virgin birth</strong> — why it is theologically necessary."],
+  "2-1": ["Isaiah 7:14 — '<strong>Immanuel</strong>' means '<strong>God with us</strong>.' Know this.", "Micah 5:2 predicted <strong>Bethlehem</strong> as birthplace — fulfilled despite Mary living in Nazareth.", "God used a <strong>Roman census</strong> to move Mary to Bethlehem — shows God's sovereignty over world events."],
+  "2-2": ["Key term: <strong>Incarnation</strong> — God becoming human in Jesus (John 1:14).", "Key term: <strong>Kenosis</strong> — Phil. 2:6–8, Jesus 'emptied Himself' of divine privileges.", "John 1:14 — '<strong>The Word became flesh</strong>' — the central verse of the Incarnation."],
+  "2-3": ["The <strong>Magi</strong> coming from the East previews: Jesus is Savior of <strong>all nations</strong>, not just Israel.", "God used <strong>dreams</strong> to protect Jesus — shows His sovereignty and providential care.", "The flight to <strong>Egypt</strong> fulfills Hosea 11:1 — Jesus recapitulates Israel's story."],
+  "2-4": ["Jesus's first words (Luke 2:49): '<strong>I must be in my Father's house</strong>' — reveals His divine self-awareness.", "Luke 2:52 — Jesus '<strong>grew in wisdom and stature</strong>' — He was truly, fully human.", "Jesus knew His identity from childhood — this is not something He 'discovered' later."],
+  "3-0": ["Isaiah 40:3 — John the Baptist is the '<strong>voice in the wilderness</strong>' — know this prophecy.", "Key concept: <strong>Repentance</strong> — turning from sin toward God, required to receive the Messiah.", "John the Baptist's role: <strong>prepare the way</strong>, not be the way."],
+  "3-1": ["At Jesus's baptism all <strong>three persons of the Trinity</strong> appeared simultaneously — Father (voice), Son (water), Spirit (dove).", "Jesus was baptized 'to <strong>fulfill all righteousness</strong>' (Matt. 3:15) — identifying with sinners.", "Key term: <strong>Trinity</strong> — one God in three persons, clearly seen at the baptism."],
+  "3-2": ["Jesus answered ALL THREE temptations by <strong>quoting Deuteronomy</strong> — know the strategy.", "Key term: <strong>The Last Adam</strong> (1 Cor. 15:45) — Jesus succeeds where Adam failed.", "Satan can <strong>quote Scripture out of context</strong> — know how Jesus corrected each misuse."],
+  "3-3": ["Jesus said 'Follow me' and the disciples <strong>immediately left everything</strong> — shows His divine authority.", "Andrew's first response: find his brother — models <strong>natural evangelism</strong>.", "Jesus promised to make fishermen '<strong>fishers of men</strong>' — every believer has a mission."],
+  "3-4": ["Mark 1:15 — '<strong>Repent and believe in the Gospel</strong>' — Jesus's first public message, know it word-for-word.", "Key concept: The <strong>Kingdom of God</strong> = God's sovereign rule arriving in the Person of Jesus.", "The Kingdom is <strong>spiritual, not political</strong> — Jesus did not come to overthrow Rome."],
+  "4-0": ["Key term: '<strong>Blessed</strong>' (Greek: makarios) — deeply happy, spiritually favored by God.", "'<strong>Blessed are the poor in spirit</strong>' = recognizing your spiritual need before God. Know all 8 Beatitudes.", "The Beatitudes describe a <strong>transformed heart</strong>, not rules to follow."],
+  "4-1": ["Christians are <strong>salt and light</strong> — active agents who preserve goodness and illuminate truth.", "Jesus 'fulfilled' the Law (Matt. 5:17) — brought it to its <strong>complete purpose</strong> through perfect obedience and death.", "Jesus cares about the <strong>heart</strong>, not just outward actions — anger = seed of murder; lust = seed of adultery."],
+  "4-2": ["The <strong>Lord's Prayer</strong> puts GOD first (name, Kingdom, will) then personal needs.", "Matt. 6:33 — '<strong>Seek first the Kingdom of God</strong>' — know this verse.", "God's care for birds/flowers (Matt. 6:25–34) = reason not to worry; He cares for YOU far more."],
+  "4-3": ["Luke 15 — Three parables told because Pharisees <strong>criticized Jesus for eating with sinners</strong>.", "The father <strong>ran</strong> to his returning son — in ancient culture, a man running was undignified; this shows God's overwhelming love.", "The older brother = <strong>self-righteous religious people</strong> who begrudge grace given to others."],
+  "4-4": ["The <strong>seed</strong> = God's Word; the <strong>soils</strong> = four types of hearts.", "Key insight: the <strong>Word is never the problem</strong> — the condition of the heart determines the fruit.", "Jesus spoke in parables 'so those with <strong>ears to hear</strong> would understand' — spiritual understanding is a gift."],
+  "5-0": ["John calls miracles '<strong>signs</strong>' — they point to Jesus's <strong>divine identity</strong>.", "Water to wine: Jesus transforms the <strong>Old Covenant</strong> (purification jars) into something new and abundant.", "John 2:11 — the miracle '<strong>revealed his glory</strong>' — this is the purpose of every sign."],
+  "5-1": ["<strong>Psalm 89:9</strong> — only GOD controls the sea. When Jesus calms it, He is claiming divine identity.", "Jesus calming the storm with 2 words = Jesus is <strong>YHWH in human flesh</strong>.", "The disciples' fear after the miracle was <strong>holy awe</strong>, not the same as fear of the storm."],
+  "5-2": ["The demons called Jesus '<strong>Son of the Most High God</strong>' — even evil spirits knew His identity.", "Jesus heals across ALL social barriers — Gentile, unclean, Jewish — shows He came for <strong>all people</strong>.", "The woman healed through <strong>faith</strong>, not her own effort — 12 doctors couldn't help but one touch of faith did."],
+  "5-3": ["Jesus said <strong>'I AM'</strong> (ego eimi) walking on water — the <strong>divine name from Exodus 3:14</strong>.", "Peter sank because he <strong>looked at the storm</strong> instead of Jesus — faith fixed on circumstances fails.", "The feeding of 5,000 teaches: bring Jesus what little you have and He <strong>multiplies it</strong>."],
+  "5-4": ["Jesus <strong>deliberately delayed</strong> going to Lazarus — suffering can serve God's greater glory (John 11:4).", "<strong>'Jesus wept'</strong> (John 11:35) — God is genuinely moved by human grief. He is not distant or cold.", "Jesus's declaration: '<strong>I am the Resurrection and the Life</strong>' — He IS resurrection, not just someone who performs one."],
+  "6-0": ["There are <strong>seven 'I AM' statements</strong> in John — know all seven.", "'I am the Bread of Life' — Jesus satisfies <strong>spiritual hunger</strong> permanently.", "'I am the Light' connects to <strong>Genesis 1:3</strong> and <strong>Isaiah 9:2</strong> — Jesus IS the divine light."],
+  "6-1": ["'I am the Gate' + 'I am the Good Shepherd' — Jesus is the <strong>only entrance</strong> and the <strong>sacrificial caretaker</strong>.", "The Good Shepherd laying down His life = <strong>preview of the cross</strong>.", "Ezekiel 34 — God promised to <strong>personally come shepherd Israel</strong>. Jesus IS that fulfillment."],
+  "6-2": ["John 14:6 — '<strong>I am the Way, the Truth, and the Life. No one comes to the Father except through me.</strong>' Know this verse.", "Jesus is not <strong>one way among many</strong> — He is the ONLY way. This is a claim of exclusive divine authority.", "Key term: <strong>Exclusive salvation</strong> — offensive to some, but essential to Christianity."],
+  "6-3": ["Israel was called God's '<strong>vine</strong>' (Isaiah 5, Psalm 80) but failed. Jesus is the <strong>True Vine</strong> they were supposed to be.", "Key concept: <strong>Abiding</strong> = constant, dependent connection to Jesus as the source of spiritual life.", "John 15:13 — '<strong>Greater love has no one than this: to lay down his life for his friends.</strong>'"],
+  "6-4": ["C.S. Lewis: Jesus is <strong>Lord, Liar, or Lunatic</strong> — never just a 'good moral teacher.'", "A good teacher does not claim to be God. Jesus's claims <strong>force a decision</strong>.", "Each 'I AM' statement is a direct claim to divine identity using the <strong>name God gave Moses</strong> at the burning bush."],
+  "7-0": ["At the Transfiguration, Jesus's glory shone through — a glimpse of His <strong>pre-incarnate divine nature</strong>.", "Moses (Law) + Elijah (Prophets) appeared — the entire Old Testament <strong>points to and bows before Jesus</strong>.", "The Father's command: '<strong>This is my beloved Son; listen to Him!</strong>' — Jesus's words are supreme authority."],
+  "7-1": ["Luke 9:51 — Jesus '<strong>resolutely set his face toward Jerusalem</strong>' knowing He would die there — He chose the cross.", "Jesus predicted His death <strong>three times</strong> (Mark 8, 9, 10) — it was not an accident.", "Key insight: The cross was not something that happened TO Jesus — it was something He <strong>chose FOR us</strong>."],
+  "7-2": ["Mark 10:44–45 — '<strong>Whoever wants to be first must be slave of all.</strong>'", "Mark 10:45 — '<strong>The Son of Man came not to be served but to serve, and to give his life as a ransom for many.</strong>' Know this.", "Key concept: Kingdom greatness = <strong>servant-hearted sacrifice</strong>, not power or position."],
+  "7-3": ["Luke 19:10 — '<strong>The Son of Man came to seek and save the lost.</strong>' Know this verse.", "Bartimaeus called Jesus '<strong>Son of David</strong>' — a <strong>Messianic title</strong>.", "Zacchaeus: genuine salvation produces <strong>changed behavior</strong> — generosity and making restitution."],
+  "7-4": ["Jesus entered Jerusalem on a <strong>donkey</strong> fulfilling <strong>Zechariah 9:9</strong> — a king of peace, not war.", "'<strong>Hosanna</strong>' originally means '<strong>Save us now!</strong>' — the crowd misunderstood what salvation meant.", "Jesus's cleansing of the Temple: 'My house shall be called a <strong>house of prayer for ALL nations</strong>' (Isaiah 56:7)."],
+  "8-0": ["The <strong>New Covenant</strong> (Jeremiah 31:31–34) was established at the Last Supper.", "In Gethsemane, the '<strong>cup</strong>' = God's wrath against sin Jesus was about to bear — not just physical death.", "Matt. 26:39 — '<strong>Not my will, but Yours be done.</strong>' — the model prayer of surrender."],
+  "8-1": ["When Jesus said '<strong>I AM</strong>' to the High Priest (Mark 14:62) plus quoted Daniel 7, the court immediately charged <strong>blasphemy</strong> — proving they understood His divine claim.", "Pilate declared Jesus <strong>innocent three times</strong> — yet condemned Him. The legally innocent died for the legally guilty.", "Peter's three denials → bitter weeping = true <strong>repentance</strong>, not just regret."],
+  "8-2": ["Isaiah 53 was written <strong>700 years</strong> before Jesus — know this date.", "Key term: <strong>Substitutionary Atonement</strong> — Jesus died IN OUR PLACE, bearing our punishment.", "Isaiah 53:5 — '<strong>He was pierced for our transgressions, crushed for our iniquities.</strong>'"],
+  "8-3": ["Jesus's <strong>first words from the cross</strong>: '<strong>Father, forgive them, they know not what they do.</strong>'", "'<strong>It is finished</strong>' (Greek: <strong>tetelestai</strong>) = a commercial term meaning '<strong>paid in full</strong>.' Know this.", "The 7 last words reveal Jesus's character: forgiving, merciful, caring, God-trusting, fully human and fully divine."],
+  "8-4": ["The <strong>Temple curtain tearing</strong> = permanent, open access to God through Jesus — the separation is over.", "Without the cross, God cannot be both <strong>just AND loving</strong> — the cross is where both attributes are satisfied.", "The cross is the clearest revelation of the <strong>character of God</strong> in all of Scripture."],
+  "9-0": ["The <strong>bodily resurrection</strong> of Jesus is essential — a 'spiritual' resurrection would NOT defeat physical death.", "Women were the <strong>first witnesses</strong> — culturally unexpected, which supports the account's authenticity.", "1 Cor. 15:6 — over <strong>500 people</strong> saw the risen Jesus at one time."],
+  "9-1": ["Thomas declared '<strong>My Lord and my God!</strong>' — the most direct statement of Jesus's divinity by a disciple, and Jesus ACCEPTED it.", "The Road to Emmaus: Jesus opened the disciples' eyes <strong>through the Scriptures</strong>.", "Jesus's response to doubters: He appeared with <strong>evidence</strong>, not scolding."],
+  "9-2": ["1 Cor. 15:17 — '<strong>If Christ has not been raised, you are still in your sins.</strong>' Know this.", "Key term: <strong>Firstfruits</strong> (1 Cor. 15:20) — Jesus's resurrection <strong>guarantees ours</strong>.", "The resurrection is God the Father's <strong>public declaration</strong> that Jesus's sacrifice was accepted."],
+  "9-3": ["Jesus restored Peter with <strong>three questions</strong> — one for each denial. This is deliberate healing of shame.", "Peter's failure + restoration = Jesus does not just forgive; He <strong>fully restores and recommissions</strong>.", "Key insight: the greatest failure can become the greatest leader through God's grace."],
+  "9-4": ["Matt. 28:18 — '<strong>All authority in heaven and on earth has been given to me. THEREFORE go...</strong>'", "The Great Commission fulfills God's promise to Abraham (Gen. 12:3): '<strong>All nations will be blessed through you.</strong>'", "Acts 1:11 — '<strong>This same Jesus will come back in the same way you saw him go.</strong>' History moves toward His return."],
+};
+
+// ── STUDENT INSTRUCTIONS per day ─────────────────────────────────────────────
+const STUDENT_INSTRUCTIONS = {
+  "1-0": { scripture: "John 1:1–3; John 20:30–31", steps: ["Open your Bible and read <strong>John 20:30–31</strong>. This is John's mission statement — understand why these books exist.", "Read today's lesson below carefully. Take a few notes if you like.", "Go to <strong>Ask Me</strong> and say: <em>'Explain what a Gospel is and tell me about the four authors.'</em>"] },
+  "1-1": { scripture: "Matthew 1:1; Mark 1:1", steps: ["Read <strong>Matthew 1:1</strong> and <strong>Mark 1:1</strong> — compare the two openings.", "Read today's lesson, focusing on why the audience shapes each author.", "Go to <strong>Ask Me</strong> and ask: <em>'Quiz me on Matthew and Mark's key differences.'</em>"] },
+  "1-2": { scripture: "Luke 1:1–4; John 1:1–14", steps: ["Read <strong>Luke 1:1–4</strong> (Luke's introduction) and <strong>John 1:1–14</strong> (John's eternal opening).", "As you read, ask: 'What is each author most concerned with proving?'", "Go to <strong>Ask Me</strong> and say: <em>'Ask me a question about Luke and John.'</em>"] },
+  "1-3": { scripture: "Galatians 4:4; Matthew 2:1–6", steps: ["Read <strong>Galatians 4:4</strong> — write down what 'the fullness of time' means to you.", "Read today's lesson about the world Jesus entered.", "Go to <strong>Ask Me</strong> and ask: <em>'Who were the Pharisees and why did they clash with Jesus?'</em>"] },
+  "1-4": { scripture: "John 1:1; Matthew 1:1; Mark 1:1", steps: ["Write out <strong>John 1:1</strong> from memory — this is a key verse for the whole course.", "Compare all four Gospel openings from today's lesson.", "Go to <strong>Ask Me</strong> and say: <em>'Give me a practice quiz question from Week 1.'</em> Then take the official <strong>Quiz tab</strong>!"] },
+  "2-0": { scripture: "Luke 1:26–38; Matthew 1:18–25", steps: ["Read <strong>Luke 1:26–38</strong> slowly. Notice Mary's response in verse 38.", "Read <strong>Matthew 1:18–25</strong> — notice Joseph's obedience.", "Go to <strong>Ask Me</strong> and say: <em>'Why does the virgin birth matter theologically?'</em>"] },
+  "2-1": { scripture: "Isaiah 7:14; Micah 5:2; Luke 2:1–7", steps: ["Read <strong>Isaiah 7:14</strong> and <strong>Micah 5:2</strong> — these are 700+ year-old prophecies.", "Read <strong>Luke 2:1–7</strong> and notice HOW God moved Mary and Joseph to Bethlehem.", "Go to <strong>Ask Me</strong>: <em>'Explain why God fulfilling prophecy matters for our faith.'</em>"] },
+  "2-2": { scripture: "John 1:14; Philippians 2:6–8; Luke 2:8–20", steps: ["Write out <strong>John 1:14</strong> from memory — 'The Word became flesh...'", "Read <strong>Philippians 2:6–8</strong> and ask: what did Jesus give up to become human?", "Go to <strong>Ask Me</strong> and say: <em>'Teach me about the Incarnation and the kenosis.'</em>"] },
+  "2-3": { scripture: "Matthew 2:1–23", steps: ["Read <strong>Matthew 2:1–23</strong> in one sitting — the Magi, Herod, Egypt, and return.", "Notice: How many times does God speak through dreams to protect His Son?", "Go to <strong>Ask Me</strong>: <em>'What does the story of the Magi tell us about who Jesus came to save?'</em>"] },
+  "2-4": { scripture: "Luke 2:41–52", steps: ["Read <strong>Luke 2:41–52</strong> — pay close attention to verse 49 (Jesus's first words) and verse 52.", "Ask yourself: How can Jesus be both 'growing in wisdom' AND be God?", "Go to <strong>Ask Me</strong>: <em>'Ask me a question about this week to prepare for the quiz.'</em> Then take the <strong>Quiz</strong>!"] },
+  "3-0": { scripture: "Luke 3:1–20; Isaiah 40:3", steps: ["Read <strong>Isaiah 40:3</strong> (written 700 years before John) then read <strong>Luke 3:1–20</strong>.", "Ask yourself: What does 'repentance' actually mean — more than just feeling sorry?", "Go to <strong>Ask Me</strong>: <em>'Explain what repentance means and why it was required before baptism.'</em>"] },
+  "3-1": { scripture: "Matthew 3:13–17", steps: ["Read <strong>Matthew 3:13–17</strong> slowly. Identify each person of the Trinity and what they did.", "Write down: 'The Trinity is...' and complete the sentence in your own words.", "Go to <strong>Ask Me</strong>: <em>'Can you explain the Trinity to me using the baptism of Jesus?'</em>"] },
+  "3-2": { scripture: "Matthew 4:1–11; Genesis 3:1–7", steps: ["Read <strong>Genesis 3:1–7</strong> (Adam's temptation) then <strong>Matthew 4:1–11</strong> (Jesus's temptation).", "Notice: what was similar, what was different, and what Jesus did that Adam did not.", "Go to <strong>Ask Me</strong>: <em>'Explain why Jesus is called the Last Adam.'</em>"] },
+  "3-3": { scripture: "Matthew 4:18–22; John 1:35–51", steps: ["Read <strong>Matthew 4:18–22</strong> — notice the word 'immediately.'", "Read <strong>John 1:35–51</strong> — what did Andrew do FIRST after meeting Jesus?", "Go to <strong>Ask Me</strong>: <em>'What does it mean to be a fisher of men?'</em>"] },
+  "3-4": { scripture: "Mark 1:14–15; Matthew 4:17", steps: ["Memorize <strong>Mark 1:15</strong> today — this is Jesus's first public message.", "Ask yourself: What does 'the Kingdom of God is at hand' actually mean?", "Go to <strong>Ask Me</strong>: <em>'Quiz me on all of Week 3 to prepare for the quiz.'</em> Then take the <strong>Quiz</strong>!"] },
+  "4-0": { scripture: "Matthew 5:1–12", steps: ["Read <strong>Matthew 5:1–12</strong> aloud slowly. These are the eight Beatitudes.", "Write each one out and beside it write what the world says instead.", "Go to <strong>Ask Me</strong>: <em>'Explain one Beatitude to me and how it reflects God's character.'</em>"] },
+  "4-1": { scripture: "Matthew 5:13–48", steps: ["Read <strong>Matthew 5:13–16</strong> (salt and light) and <strong>Matthew 5:21–28</strong> (heart standards).", "Ask yourself: If God cares about my thoughts, what does that mean for me today?", "Go to <strong>Ask Me</strong>: <em>'Why does Jesus raise the standard beyond just outward actions?'</em>"] },
+  "4-2": { scripture: "Matthew 6:9–34", steps: ["Read <strong>Matthew 6:9–13</strong> (Lord's Prayer) and <strong>Matthew 6:25–34</strong> (do not worry).", "Write out Matthew 6:33 from memory — this is a test verse.", "Go to <strong>Ask Me</strong>: <em>'Walk me through the Lord's Prayer and explain what each part means.'</em>"] },
+  "4-3": { scripture: "Luke 15:1–32", steps: ["Read all of <strong>Luke 15</strong> — three parables, read them as one connected story.", "Ask yourself: which character in the Prodigal Son story am I most like right now?", "Go to <strong>Ask Me</strong>: <em>'The Pharisees were grumbling — how did Jesus answer them through these parables?'</em>"] },
+  "4-4": { scripture: "Matthew 13:1–23; Mark 4:1–20", steps: ["Read <strong>Matthew 13:1–9</strong> (the parable) then <strong>Matthew 13:18–23</strong> (Jesus's explanation).", "Which soil best describes where YOU are right now? Be honest.", "Go to <strong>Ask Me</strong>: <em>'Quiz me on Week 4 — parables and Sermon on the Mount.'</em> Then take the <strong>Quiz</strong>!"] },
+  "5-0": { scripture: "John 2:1–11", steps: ["Read <strong>John 2:1–11</strong>. Notice: John calls this a 'sign' — what does that mean?", "Look at what Jesus used (stone purification jars) and ask why that detail matters.", "Go to <strong>Ask Me</strong>: <em>'What is the difference between a miracle and a sign?'</em>"] },
+  "5-1": { scripture: "Mark 4:35–41; Psalm 89:9", steps: ["Read <strong>Psalm 89:9</strong> first — who does the Psalmist say controls the seas?", "Then read <strong>Mark 4:35–41</strong> and see that claim fulfilled in Jesus.", "Go to <strong>Ask Me</strong>: <em>'Why did the disciples ask WHO is this man after He calmed the storm?'</em>"] },
+  "5-2": { scripture: "Mark 5:1–43", steps: ["Read all of <strong>Mark 5</strong> in one sitting — three miracle stories woven together.", "Notice the common people Jesus heals: a Gentile outcast, an unclean woman, a synagogue leader's daughter.", "Go to <strong>Ask Me</strong>: <em>'What do these three healings together tell us about who Jesus came to save?'</em>"] },
+  "5-3": { scripture: "Matthew 14:22–33; Exodus 3:14", steps: ["Read <strong>Exodus 3:14</strong> (God's name revealed to Moses) then <strong>Matthew 14:22–33</strong>.", "Notice when Jesus says 'I AM' (ego eimi) in verse 27 — what is He claiming?", "Go to <strong>Ask Me</strong>: <em>'Why did Peter start to sink, and what does that teach about faith?'</em>"] },
+  "5-4": { scripture: "John 11:1–44", steps: ["Read all of <strong>John 11</strong> — pay special attention to verse 35 and verse 25.", "Ask yourself: Why did Jesus weep if He knew He was about to raise Lazarus?", "Go to <strong>Ask Me</strong>: <em>'Quiz me on all five miracles from this week.'</em> Then take the <strong>Quiz</strong>!"] },
+  "6-0": { scripture: "John 6:35; 8:12; Exodus 3:14", steps: ["Read <strong>Exodus 3:14</strong> — God's name 'I AM.' Underline it. This is the key to Week 6.", "Read <strong>John 6:35</strong> and <strong>John 8:12</strong>. Say each one aloud.", "Go to <strong>Ask Me</strong>: <em>'Explain how these I AM statements connect to the burning bush in Exodus.'</em>"] },
+  "6-1": { scripture: "John 10:7–18; Ezekiel 34:11–16", steps: ["Read <strong>Ezekiel 34:11–16</strong> (God's promise) then <strong>John 10:7–18</strong> (its fulfillment).", "Notice: what does the Good Shepherd do that the hired hand won't?", "Go to <strong>Ask Me</strong>: <em>'How does Jesus claiming to be the Good Shepherd connect to Ezekiel 34?'</em>"] },
+  "6-2": { scripture: "John 14:6", steps: ["<strong>Memorize John 14:6</strong> today: 'I am the Way, and the Truth, and the Life. No one comes to the Father except through me.'", "Ask yourself: why would this verse offend some people, and why is it essential for Christians?", "Go to <strong>Ask Me</strong>: <em>'Is Jesus really the ONLY way to God? Explain why this is so important.'</em>"] },
+  "6-3": { scripture: "John 15:1–17; Isaiah 5:1–7", steps: ["Read <strong>Isaiah 5:1–7</strong> (Israel as the failing vine) then <strong>John 15:1–11</strong> (Jesus as the True Vine).", "Ask yourself: what does 'abiding' look like practically in your daily life?", "Go to <strong>Ask Me</strong>: <em>'What does it mean to abide in Jesus, and what happens when you don't?'</em>"] },
+  "6-4": { scripture: "John 8:58; 10:30; 14:6", steps: ["Read <strong>John 8:58</strong> ('Before Abraham was, I AM') and <strong>John 10:30</strong> ('The Father and I are one').", "Consider the C.S. Lewis argument: Lord, Liar, or Lunatic. Which do you believe and why?", "Go to <strong>Ask Me</strong>: <em>'Quiz me on all seven I AM statements — I want to be ready for the quiz.'</em> Then take the <strong>Quiz</strong>!"] },
+  "7-0": { scripture: "Matthew 17:1–9; 2 Peter 1:16–18", steps: ["Read <strong>Matthew 17:1–9</strong>. Try to picture the scene — what would you have felt?", "Read <strong>2 Peter 1:16–18</strong> — Peter's own memory of this event years later.", "Go to <strong>Ask Me</strong>: <em>'Why did Moses and Elijah appear at the Transfiguration? What does that mean?'</em>"] },
+  "7-1": { scripture: "Luke 9:51; Mark 10:32–34", steps: ["Read <strong>Luke 9:51</strong> (Jesus sets His face) and <strong>Mark 10:32–34</strong> (third passion prediction).", "Sit with this: Jesus KNEW what was coming and walked toward it anyway. What does that mean for you?", "Go to <strong>Ask Me</strong>: <em>'What does Jesus's willingness to go to the cross tell us about His love?'</em>"] },
+  "7-2": { scripture: "Mark 10:35–45", steps: ["Read <strong>Mark 10:35–45</strong>. James and John ask for power — what do they misunderstand?", "Write out <strong>Mark 10:45</strong> from memory — this is a key test verse.", "Go to <strong>Ask Me</strong>: <em>'How does Jesus redefine what it means to be great?'</em>"] },
+  "7-3": { scripture: "Luke 18:35–43; Luke 19:1–10", steps: ["Read both stories back to back: <strong>Luke 18:35–43</strong> and <strong>Luke 19:1–10</strong>.", "Notice: one man cried out through a crowd, one climbed a tree. Both were seeking. Both were found.", "Go to <strong>Ask Me</strong>: <em>'What does Zacchaeus's response to Jesus show about what real salvation looks like?'</em>"] },
+  "7-4": { scripture: "Luke 19:28–44; Zechariah 9:9", steps: ["Read <strong>Zechariah 9:9</strong> (prophecy) then <strong>Luke 19:28–44</strong> (fulfillment).", "Notice that Jesus wept over Jerusalem — why would He weep over people who were about to kill Him?", "Go to <strong>Ask Me</strong>: <em>'Quiz me on Week 7 — I'm getting close to the mid-quarter test!'</em> Then take the <strong>Quiz</strong>!"] },
+  "8-0": { scripture: "Matthew 26:17–46; Jeremiah 31:31–34", steps: ["Read <strong>Jeremiah 31:31–34</strong> (the New Covenant promise) then <strong>Matthew 26:26–29</strong> (its fulfillment).", "Then read <strong>Matthew 26:36–46</strong> — Gethsemane. Read it slowly and reverently.", "Go to <strong>Ask Me</strong>: <em>'What was the cup Jesus prayed about in Gethsemane? Why was it so terrible?'</em>"] },
+  "8-1": { scripture: "Matthew 26:57–75; Luke 23:1–25", steps: ["Read <strong>Matthew 26:57–68</strong> (trial before Caiaphas) and <strong>Luke 23:13–25</strong> (Pilate's verdict).", "Focus: Why did Jesus's 'I AM' response cause an immediate charge of blasphemy?", "Go to <strong>Ask Me</strong>: <em>'Explain why Jesus had to be declared innocent by Pilate. What does that mean theologically?'</em>"] },
+  "8-2": { scripture: "Isaiah 53; Matthew 27:27–50", steps: ["Read <strong>Isaiah 53</strong> slowly — written 700 years before Jesus.", "Then read <strong>Matthew 27:27–50</strong> and match each verse of Isaiah 53 to what happened.", "Go to <strong>Ask Me</strong>: <em>'Explain substitutionary atonement to me in plain language.'</em>"] },
+  "8-3": { scripture: "Luke 23:34–46; John 19:28–30", steps: ["Read each of the seven last words carefully: <strong>Luke 23:34, 43, 46</strong> and <strong>John 19:26–27, 28, 30</strong> and <strong>Mark 15:34</strong>.", "For each one, ask: What does this reveal about who Jesus is?", "Go to <strong>Ask Me</strong>: <em>'Walk me through all seven last words of Jesus and what each one reveals.'</em>"] },
+  "8-4": { scripture: "Matthew 27:51–54; Romans 5:8", steps: ["Read <strong>Matthew 27:51–54</strong> — the curtain, the earthquake, the centurion's declaration.", "Read <strong>Romans 5:8</strong> — 'While we were still sinners, Christ died for us.'", "Go to <strong>Ask Me</strong>: <em>'Quiz me on Week 8 — the Last Supper, trials, and crucifixion.'</em> Then take the <strong>Quiz</strong>!"] },
+  "9-0": { scripture: "Matthew 28:1–15; 1 Corinthians 15:3–8", steps: ["Read <strong>Matthew 28:1–15</strong> — notice details that point to historical reliability (women as witnesses, the bribed soldiers).", "Read <strong>1 Cor. 15:3–8</strong> — Paul's eyewitness list. 500+ people saw Jesus risen.", "Go to <strong>Ask Me</strong>: <em>'Why does the bodily resurrection matter so much? Why not a spiritual resurrection?'</em>"] },
+  "9-1": { scripture: "Luke 24:13–35; John 20:19–31", steps: ["Read <strong>Luke 24:13–35</strong> (Road to Emmaus) and <strong>John 20:24–29</strong> (Thomas).", "Notice: Thomas's response to seeing the risen Jesus. What did he say? Why is it so important?", "Go to <strong>Ask Me</strong>: <em>'Why is Thomas's declaration the most important statement of Jesus's divinity in the Gospels?'</em>"] },
+  "9-2": { scripture: "1 Corinthians 15:12–22", steps: ["Read <strong>1 Corinthians 15:12–22</strong> — Paul's logical argument about why the resurrection changes everything.", "Memorize <strong>1 Cor. 15:17</strong>: 'If Christ has not been raised, you are still in your sins.'", "Go to <strong>Ask Me</strong>: <em>'Explain what it means that Jesus is the firstfruits of resurrection.'</em>"] },
+  "9-3": { scripture: "John 21:1–19", steps: ["Read <strong>John 21:1–19</strong> — the breakfast by the sea and Jesus's three questions to Peter.", "Ask yourself: If Jesus restored someone who denied Him three times, what does that mean for you?", "Go to <strong>Ask Me</strong>: <em>'Why did Jesus ask Peter three times if he loved Him? What was He doing?'</em>"] },
+  "9-4": { scripture: "Matthew 28:18–20; Acts 1:8–11", steps: ["Memorize <strong>Matthew 28:18–20</strong> — the Great Commission. Read it aloud three times.", "Read <strong>Acts 1:8–11</strong> — the Ascension and the promise of return.", "Go to <strong>Ask Me</strong>: <em>'Give me a comprehensive review quiz to prepare for the End of Quarter Test.'</em> Then take the <strong>End of Quarter Test</strong>!"] },
+};
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+buildNav();
+</script>
+</body>
+</html>
